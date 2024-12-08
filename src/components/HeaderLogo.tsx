@@ -8,6 +8,7 @@ const HeaderLogo = () => {
         <div className='items-center hidden lg:flex'>
             <Image src="/Logo/logo-white.png" height={100} width={200} alt='logo'/>
         </div>
+        
     </Link>
   )
 }

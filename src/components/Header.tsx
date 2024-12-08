@@ -3,13 +3,14 @@ import HeaderLogo from '@/components/HeaderLogo'
 import Navigation from '@/components/Navigation'
 // import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs'
 import { Loader2 } from 'lucide-react'
+import SearchBar from '@/components/SearchBar'
 // import WelcomeMsg from '@/components/WelcomeMsg'
 // import { Filters } from '@/components/filters'
 
 const Header = () => {
   return (
-    <header className='bg-gradient-to-b from-green-600 to-green-400 px-4 py-8 lg:px-14 pb-36'>
-        <div className='max-w-screen-2xl mx-auto'>
+    <header className='bg-gradient-to-b from-emerald-600 to-emerald-400 px-4 py-8 lg:px-14 pb-36'>
+        <div className='max-w-screen-2xl mx-auto border border-red-700'>
             <div className='h-full flex items-center justify-between mb-14'>
                 <div className='flex items-center lg:gap-16'>
                     <HeaderLogo />
@@ -24,7 +25,12 @@ const Header = () => {
             </div>
             {/* <WelcomeMsg />
             <Filters /> */}
+            <div className="flex justify-center items-center">
+          <SearchBar />
         </div>
+        </div>
+        <div>hello</div>
+
     </header>
   )
 }
