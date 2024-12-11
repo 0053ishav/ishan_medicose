@@ -9,8 +9,8 @@ import SearchBar from '@/components/SearchBar'
 
 const Header = () => {
   return (
-    <header className='bg-gradient-to-b from-emerald-600 to-emerald-400 px-4 py-8 lg:px-14 pb-36'>
-        <div className='max-w-screen-2xl mx-auto border border-red-700'>
+    <header className='bg-gradient-to-b from-emerald-600 to-emerald-400 px-4 py-8 lg:px-14 pb-20'>
+        <div className='max-w-screen-2xl mx-auto'>
             <div className='h-full flex items-center justify-between mb-14'>
                 <div className='flex items-center lg:gap-16'>
                     <HeaderLogo />
@@ -29,8 +29,6 @@ const Header = () => {
           <SearchBar />
         </div>
         </div>
-        <div>hello</div>
-
     </header>
   )
 }
