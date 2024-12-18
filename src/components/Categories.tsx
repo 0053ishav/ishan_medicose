@@ -12,7 +12,11 @@ interface Category {
   image: string;
 }
 
-const Categories = () => {
+interface CategoriesProps {
+  showAllCategories?: boolean;
+}
+
+const Categories = ({ showAllCategories = false}: CategoriesProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [showAll, setShowAll] = useState<boolean>(false);
   const [categoryData, setCategoryData] = useState<Category[]>([]);
@@ -44,6 +48,8 @@ const Categories = () => {
     router.push(`/categories/${category.id}/${(category.name).replace(" ", "-")}`);
   };
 
+  const categoriesToDisplay = showAllCategories ? categoryData : categoryData.slice(0, 4); 
+
   return (
     <div className="container">
         {/* Button with Dropdown */}
@@ -73,7 +79,7 @@ const Categories = () => {
 
         {showAll && (
           <div className="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-20 overflow-auto max-h-64">
-            {categoryData.map((category) => (
+            {categoriesToDisplay.map((category) => (
               <div
                 key={category.id}
                 onClick={() => handleCategoryClick(category)}
@@ -105,7 +111,7 @@ const Categories = () => {
               <Skeleton className="w-16 h-4" />
             </div>
           ))
-        : categoryData.map((category) => (
+        : categoriesToDisplay.map((category) => (
             <div
               key={category.id}
               onClick={() => handleCategoryClick(category)}

@@ -52,7 +52,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
           <div key={field.name} className="mb-4">
             <label
               htmlFor={field.name}
-              className="block text-sm font-medium text-gray-700"
+              className="block text-md font-medium text-gray-700"
             >
               {field.label}
             </label>

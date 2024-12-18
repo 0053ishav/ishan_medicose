@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchProductsByCategory } from "@/lib/appwrite";
 import ProductCard from "@/components/ProductCard";
@@ -11,6 +11,10 @@ const CategoryPage = () => {
   const { category , name } = useParams();  
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+
+  const categoryId = Array.isArray(category) ? category[0] : category;
+  const categoryName = Array.isArray(name) ? name[0] : name;
 
   useEffect(() => {
     const fetchCategoryProducts = async () => {
@@ -62,7 +66,7 @@ const CategoryPage = () => {
         {products.map((product) => (
           <ProductCard
             key={product.id}
-            id={product.id}
+            id={product.$id}
             name={product.name}
             price={product.price}
             imageUrl={product.imageUrl}
@@ -70,6 +74,9 @@ const CategoryPage = () => {
             image={product.image}
             stock={product.stock}
             inStock={product.inStock}
+            categoryId={categoryId}
+            categoryName={categoryName}
+            context="categories"
           />
         ))}
       </div>

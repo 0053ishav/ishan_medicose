@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import ProductDetail from "@/components/ProductDetail";
 
-const ProductDetailPage = () => {
+const CategoryProductDetailPage = () => {
   const { productId } = useParams();
 
   return (
@@ -13,4 +13,4 @@ const ProductDetailPage = () => {
   );
 };
 
-export default ProductDetailPage;
+export default CategoryProductDetailPage;

@@ -70,74 +70,19 @@ const ContactForm = () => {
     }
   };
 
-//   return (
-//     <div className="py-10 bg-cover bg-center bg-gradient-to-tr from-emerald-500  via-transparent to-transparent" 
-//     // style={{backgroundImage: 'url(/bg/medicineCover.jpg)'}}
-//     >
-//    <div className="container mx-auto px-4">
-//         {/* <h2 className="text-3xl font-bold text-center mb-6">Contact Us</h2> */}
-//         <ReusableForm
-//           fields={fields}
-//           onSubmit={handleSubmit}
-//           loading={loading}
-//           successMessage={successMessage!}
-//           errorMessage={errorMessage!}
-//         />
-//       </div>
-//       <AlertModal
-//         isOpen={showModal}
-//         message={loading ? 'Sending your message... Please wait.' : (success ? 'Your message has been sent! We\'ll get back to you soon.' : 'Oops! There was an issue sending your message. Please try again.')}
-//         onClose={() => setShowModal(false)}
-//       />
-//     </div>
-//   );
-// };
-
-
-// return (
-//     <div  className="py-10 bg-cover bg-center bg-gradient-to-tr from-emerald-500 via-transparent to-pharma-emerald">
-//       <div className="container mx-auto px-4 py-10 relative z-10 bg-white bg-opacity-80 rounded-lg shadow-xl bg-cover bg-center" 
-//           style={{  backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : undefined }}
-
-//       >
-//         {/* Optional title */}
-//         {/* <h2 className="text-3xl font-bold text-center mb-6  text-pharma-emerald">Contact Us</h2> */}
-  
-//         <ReusableForm
-//           fields={fields}
-//           onSubmit={handleSubmit}
-//           loading={loading}
-//           successMessage={successMessage!}
-//           errorMessage={errorMessage!}
-//         />
-//       </div>
-  
-//       {/* Alert Modal */}
-//       <AlertModal
-//         isOpen={showModal}
-//         message={loading ? 'Sending your message... Please wait.' : (success ? 'Your message has been sent! We\'ll get back to you soon.' : 'Oops! There was an issue sending your message. Please try again.')}
-//         onClose={() => setShowModal(false)}
-//       />
-//     </div>
-//   );
-
 return (
     <div className="py-10 bg-gradient-to-tr from-emerald-500 via-transparent to-pharma-emerald">
       <div className="container mx-auto px-4 flex gap-4">
-        {/* Left Decorative Div */}
+
         <div
           className="flex-1 bg-cover bg-center rounded-lg shadow-md"
           style={{ backgroundImage: `url(${backgroundImageUrl})`, height: "400px" }}
         />
 
-        {/* Form Div */}
         <div
           className="flex-none w-full md:w-1/2 bg-white bg-opacity-80 rounded-lg shadow-xl py-10 px-6 relative z-10 bg-cover bg-center"
           style={{ backgroundImage: `url(${backgroundImageUrl})` }}
         >
-          {/* <h2 className="text-3xl font-bold text-center mb-6 text-pharma-emerald">
-            Contact Us
-          </h2> */}
 
           <ReusableForm
             fields={fields}
@@ -148,14 +93,12 @@ return (
           />
         </div>
 
-        {/* Right Decorative Div */}
         <div
           className="flex-1 bg-cover bg-center rounded-lg shadow-md"
           style={{ backgroundImage: `url(${backgroundImageUrl})`, height: "400px" }}
         />
       </div>
 
-      {/* Alert Modal */}
       <AlertModal
         isOpen={showModal}
         message={

@@ -15,6 +15,9 @@ interface ProductCardProps {
   inStock: boolean;
   loading?: boolean;
   tags?: string;
+  context: "categories" | "products";
+    categoryId?: string;
+  categoryName?: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -28,12 +31,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
   inStock,
   loading = false,
   tags,
+  context,
+  categoryId,
+  categoryName,
 }) => {
 
   const router = useRouter();
 
   const handleCardClick = () => {
-    router.push(`/product/${id}?tag=${tags || 'all'}`);
+    if(context === 'categories' && categoryId && categoryName) {
+      router.push(`/categories/${categoryId}/${categoryName}/products/${id}`);
+    } else {
+      router.push(`/product/${id}?tag=${tags || 'all'}`);
+    }
   }
 
   const isAvailable = inStock || stock > 0;

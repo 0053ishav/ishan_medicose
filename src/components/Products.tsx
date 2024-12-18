@@ -43,6 +43,7 @@ const Products = ({ tags }: { tags?: string }) => {
               stock={0}
               inStock={false}
               loading={true}
+              context="products"
             />
           ))}
         </div>
@@ -61,6 +62,7 @@ const Products = ({ tags }: { tags?: string }) => {
                 stock={product.stock}
                 inStock={product.inStock}
                 tags={product.tags}
+                context="products"
               />
             ))}
           </div>
