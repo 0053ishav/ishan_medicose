@@ -35,7 +35,7 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
         setReviews(sortedReviews);
 
         const totalRating = reviewData.reduce((sum, review) => sum + review.rating, 0);
-        const avgRating = totalRating / reviewData.length;
+        const avgRating =  reviewData.length > 0 ? totalRating / reviewData.length : 0;
         setAverageRating(avgRating);
         setTotalReviews(reviewData.length);
 
