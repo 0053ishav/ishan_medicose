@@ -47,8 +47,8 @@ export default {
 				pharma: {
 					emerald: {
 						DEFAULT: '#10B981',   // Emerald (default)
-						light: '#6EE7B7',     // Light Emerald
-						dark: '#047857',      // Dark Emerald
+						light: '#2fcd94',     // Light Emerald
+						dark: '#089e73',      // Dark Emerald
 					},
 				},
 				border: 'hsl(var(--border))',

@@ -40,7 +40,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-lg mx-auto p-6 bg-gray-300 rounded-lg shadow-lg">
       <form onSubmit={handleSubmit}>
         {successMessage && (
           <div className="text-green-600 text-center mb-4">{successMessage}</div>

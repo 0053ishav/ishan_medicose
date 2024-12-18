@@ -1,92 +1,127 @@
-'use client'
+"use client";
 import { fetchCategories } from "@/lib/appwrite";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/button";
 
 interface Category {
   id: number;
   name: string;
   imageUrl: string;
-  image: string
+  image: string;
 }
 
-// const categories: Category[] = [
-//   { id: 1, name: "Pharmacy", imageUrl: "/CategoriesIcons/pharmacy.png" },
-//   { id: 2, name: "Personal Care", imageUrl: "/CategoriesIcons/cream.png" },
-//   { id: 3, name: "Wellness", imageUrl: "/CategoriesIcons/meditation.png" },
-//   { id: 4, name: "Vitamins", imageUrl: "/CategoriesIcons/supplement.png" },
-//   { id: 5, name: "Baby Care", imageUrl: "/CategoriesIcons/baby.png" },
-//   { id: 6, name: "Beauty", imageUrl: "/CategoriesIcons/makeup.png" },
-//   { id: 7, name: "Elderly Care", imageUrl: "/CategoriesIcons/elderly.png" },
-// ];
-
 const Categories = () => {
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showAll, setShowAll] = useState<boolean>(false);
   const [categoryData, setCategoryData] = useState<Category[]>([]);
+
   useEffect(() => {
     const loadData = async () => {
       try {
         const categoryData = await fetchCategories();
-// console.log("fetched category data: " + categoryData);
-
         const formattedCategoryData = categoryData.map((category: any) => ({
           id: category.$id,
           name: category.categoryName,
           imageUrl: category.categoryImageUrl,
           image: category.image,
-        }))
-// console.log("fetched categories: " + JSON.stringify(formattedCategoryData));
+        }));
 
-        setCategoryData(formattedCategoryData)
+        setCategoryData(formattedCategoryData);
       } catch (error) {
-        console.error("Error fetching category data: " , error);
+        console.error("Error fetching category data: ", error);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     loadData();
-  }, [])
+  }, []);
 
-
-const router = useRouter()
+  const router = useRouter();
   const handleCategoryClick = (category: Category) => {
-    console.log(`${category.name} Clicked` );
-    // Perform actions like navigation or filtering here
-    // Example: Navigate to a page or trigger a product filter
-   //  router.push(`/products?category=${category.name}`);
-  }
-
+    router.push(`/categories/${category.id}/${(category.name).replace(" ", "-")}`);
+  };
 
   return (
-    <div className="flex flex-wrap gap-6 justify-center">
-      {loading ? (
-        Array.from({ length: 7 }).map((_, index) => (
-          <div key={index} className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-            <Skeleton className="w-14 h-14 rounded-full mb-2" />  
-            <Skeleton className="w-16 h-4" />  
-          </div>
-        ))
-      ) : (
-        categoryData.map((category) => (
-          <div
-            key={category.id}
-            onClick={() => handleCategoryClick(category)}
-            className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+    <div className="container">
+        {/* Button with Dropdown */}
+        <div className="relative">
+        <Button
+          onClick={() => setShowAll((prev) => !prev)}
+          className="flex items-center pc-4 py-2 bg-pharma-emerald-light text-white rounded-md hover:bg-pharma-emerald transition"
+        >
+          All Categories
+          <svg
+            className={`w-5 h-5 ml-2 transition-transform ${
+              showAll ? "rotate-180" : "rotate-0"
+            }`}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
           >
-            <img
-              src={category.image}
-              alt={category.name}
-              className="w-14 h-14 rounded-full object-cover"
+            <path
+              fillRule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
+              clipRule="evenodd"
             />
-            <span className="mt-2 text-sm font-medium text-gray-700">
-              {category.name}
-            </span>
+          </svg>
+        </Button>
+
+        {/* Dropdown */}
+
+        {showAll && (
+          <div className="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-20 overflow-auto max-h-64">
+            {categoryData.map((category) => (
+              <div
+                key={category.id}
+                onClick={() => handleCategoryClick(category)}
+                className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-8 h-8 rounded-full mr-3 object-cover"
+                />
+                <span className="text-s font-medium text-gray-700">
+                  {category.name}
+                </span>
+              </div>
+            ))}
           </div>
-        ))
-      )}
+        )}
+      </div>
+    <div className="flex flex-wrap gap-6 justify-center">
+    
+
+      {loading
+        ? Array.from({ length: 7 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+            >
+              <Skeleton className="w-14 h-14 rounded-full mb-2" />
+              <Skeleton className="w-16 h-4" />
+            </div>
+          ))
+        : categoryData.map((category) => (
+            <div
+              key={category.id}
+              onClick={() => handleCategoryClick(category)}
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+            >
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-14 h-14 rounded-full object-cover"
+              />
+              <span className="mt-2 text-sm font-medium text-gray-700">
+                {category.name}
+              </span>
+            </div>
+          ))}
+    </div>
     </div>
   );
 };
