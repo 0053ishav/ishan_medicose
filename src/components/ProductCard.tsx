@@ -66,11 +66,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
       className="border rounded-lg shadow-sm p-2 relative bg-white transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer"
     >
       {isAvailable ? (
-        <span className="absolute z-10 top-1 right-1 bg-pharma-emerald text-white text-[10px] font-semibold px-1 py-0.5 rounded-full">
+        <span className="absolute z-10 top-1 right-1 bg-pharma-emerald text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
           In Stock
         </span>
       ) : (
-        <span className="absolute z-10 top-1 right-1 bg-red-500 text-white text-[10px] font-semibold px-1 py-0.5 rounded-full">
+        <span className="absolute z-10 top-1 right-1 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
           Out of Stock
         </span>
       )}

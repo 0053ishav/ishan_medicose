@@ -75,7 +75,7 @@ const Products = ({ tags }: { tags?: string }) => {
             >
               Previous
             </Button>
-            <span className="flex items-center text-sm font-medium">{`Page ${currentPage} of ${totalPages}`}</span>
+            <span className="flex items-center text-sm font-medium text-slate-700">{`Page ${currentPage} of ${totalPages}`}</span>
             <Button
               onClick={goToNextPage}
               disabled={currentPage === totalPages}

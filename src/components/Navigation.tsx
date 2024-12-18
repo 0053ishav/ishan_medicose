@@ -18,6 +18,10 @@ const routes = [
     label: "About Us",
   },
   {
+    href: "/product",
+    label: "Products",
+  },
+  {
     href: "/categories",
     label: "Categories",
   },
