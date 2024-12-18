@@ -53,7 +53,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
   return (
     <div className="container">
         {/* Button with Dropdown */}
-        <div className="relative">
+       {!showAllCategories &&  <div className="relative">
         <Button
           onClick={() => setShowAll((prev) => !prev)}
           className="flex items-center pc-4 py-2 bg-pharma-emerald-light text-white rounded-md hover:bg-pharma-emerald transition"
@@ -79,7 +79,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
 
         {showAll && (
           <div className="absolute left-0 mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-20 overflow-auto max-h-64">
-            {categoriesToDisplay.map((category) => (
+            {categoryData.map((category) => (
               <div
                 key={category.id}
                 onClick={() => handleCategoryClick(category)}
@@ -97,7 +97,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
             ))}
           </div>
         )}
-      </div>
+      </div>}
     <div className="flex flex-wrap gap-6 justify-center">
     
 
