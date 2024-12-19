@@ -176,19 +176,7 @@ export async function fetchMedicalDetails(productId: string) {
       MedicalDetailsCollectionId,
       [Query.equal("productId", productId)] 
     );
-    // if (response.documents.length === 0) {
-    //   return null
-    // }
 
-    // const data = response.documents.map((doc) => ({
-    //   features: doc.features,
-    //   medicalUses: doc.medicalUses,
-    //   precautions: doc.precautions,
-    //   manufacturer: doc.manufacturer,
-    //   dosage: doc.dosage,
-    //   expiryDate: doc.expiryDate,
-    //   productId: doc.productId,
-    // }));
     return response;
   } catch (error) {
     console.error("Error fetching medical details: ", error);
