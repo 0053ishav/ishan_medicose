@@ -162,3 +162,36 @@ export async function submitReview(productId: string, rating: number, reviewText
     throw new Error("Failed to submit review");
   }
 }
+
+export async function fetchMedicalDetails(productId: string) {
+  const client = await createAdminClient();
+  const database = client.databases;
+  
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const MedicalDetailsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_MEDICAL_DETAILS_COLLECTION_ID!;
+
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      MedicalDetailsCollectionId,
+      [Query.equal("productId", productId)] 
+    );
+    // if (response.documents.length === 0) {
+    //   return null
+    // }
+
+    // const data = response.documents.map((doc) => ({
+    //   features: doc.features,
+    //   medicalUses: doc.medicalUses,
+    //   precautions: doc.precautions,
+    //   manufacturer: doc.manufacturer,
+    //   dosage: doc.dosage,
+    //   expiryDate: doc.expiryDate,
+    //   productId: doc.productId,
+    // }));
+    return response;
+  } catch (error) {
+    console.error("Error fetching medical details: ", error);
+    throw new Error;
+  }
+}

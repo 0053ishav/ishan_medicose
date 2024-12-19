@@ -6,6 +6,7 @@ import ProductDetailUI from "@/components/ProductDetailUI";
 import Bestsellers from "@/components/BestSellers";
 import Featured from "@/components/Featured";
 import RatingAndReview from "@/components/RatingAndReview";
+import MedicalDetails from "./MedicalDetails";
 
 interface ProductDetailProps {
   productId: string | string[] | undefined;
@@ -35,7 +36,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
   }, [productId]);
 
   const id = Array.isArray(productId) ? productId[0] : productId;
-  const finalProductId = typeof id === "string" ? id : ""; // Default to empty string if not valid
+  const finalProductId = typeof id === "string" ? id : "";
 
   return (
     <>
@@ -43,6 +44,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
     <Bestsellers />
     <Featured />
     <RatingAndReview productId={finalProductId}/>
+    <MedicalDetails productId={finalProductId} />
     </>
   )
   

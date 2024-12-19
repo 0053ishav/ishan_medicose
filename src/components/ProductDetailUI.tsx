@@ -99,7 +99,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
               ))}
             </div>
           </div>
-          <div className="md:w-1/2 md:ml-8">
+          <div className="md:w-1/2 md:ml-8 mt-4">
             <h2 className="text-3xl font-bold">{product.name}</h2>
             <p className="text-xl text-gray-600">₹{product.price}</p>
             <p className="mt-4">{product.description}</p>
