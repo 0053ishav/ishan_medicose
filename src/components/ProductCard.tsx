@@ -16,7 +16,7 @@ interface ProductCardProps {
   loading?: boolean;
   tags?: string;
   context: "categories" | "products";
-    categoryId?: string;
+  categoryId?: string;
   categoryName?: string;
 }
 
@@ -37,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
 
   const router = useRouter();
-
+  
   const handleCardClick = () => {
     if(context === 'categories' && categoryId && categoryName) {
       router.push(`/categories/${categoryId}/${categoryName}/products/${id}`);
@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       <h3 className="mt-1 text-sm font-semibold text-center">{name}</h3>
-      <p className="text-xs text-gray-600 text-center">{price}</p>
+      <p className="text-xs text-gray-600 text-center">₹{price}</p>
       <button
         className={`mt-2 w-full text-white py-1 text-xs rounded ${
           isAvailable

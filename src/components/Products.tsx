@@ -61,7 +61,7 @@ const Products = ({ tags }: { tags?: string }) => {
                 image={product.image}
                 stock={product.stock}
                 inStock={product.inStock}
-                tags={product.tags}
+                tags={tags}
                 context="products"
               />
             ))}

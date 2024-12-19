@@ -86,7 +86,7 @@ export async function fetchProductById (productId: string) {
 }
 
 
-export const fetchProductsByCategory = async (categoryId: string) => {
+export async function fetchProductsByCategory (categoryId: string) {
   const client = await createAdminClient();
   const database = client.databases;
   
@@ -105,3 +105,81 @@ export const fetchProductsByCategory = async (categoryId: string) => {
     throw new Error("Failed to fetch products");
   }
 };
+
+export async function fetchReviews(productId: string) {
+  const client = await createAdminClient();
+  const database = client.databases;
+  
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const reviewCollectionId = process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!;
+
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      reviewCollectionId,
+      [Query.equal("productId", productId)] 
+    );
+
+    const reviews = response.documents.map((doc) => ({
+      rating: doc.rating,
+      reviewText: doc.reviewText,
+      userId: doc.userId,
+      createdAt: doc.$createdAt,
+      id: doc.$id,
+    }));
+
+    return reviews;
+  } catch (error) {
+    console.error("Error fetching review: ", error);
+    throw new Error;
+  }
+}
+
+
+export async function submitReview(productId: string, rating: number, reviewText: string,   userId: string) {
+  const client = await createAdminClient();
+  const database = client.databases;
+  
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const reviewCollectionId = process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!;
+
+  try {
+    const response = await database.createDocument(
+      databaseId,
+      reviewCollectionId,
+      "unique()",
+      {
+        productId,
+        rating,
+        reviewText,
+        $createdAt: new Date().toISOString(),
+        userId // Todo: Add user id
+      }
+    )
+    return response;
+  } catch (error) {
+    console.error("Error submitting review:", error);
+    throw new Error("Failed to submit review");
+  }
+}
+
+export async function fetchMedicalDetails(productId: string) {
+  const client = await createAdminClient();
+  const database = client.databases;
+  
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const MedicalDetailsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_MEDICAL_DETAILS_COLLECTION_ID!;
+
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      MedicalDetailsCollectionId,
+      [Query.equal("productId", productId)] 
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error fetching medical details: ", error);
+    throw new Error;
+  }
+}
