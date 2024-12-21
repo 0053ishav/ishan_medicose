@@ -29,7 +29,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-slate-700">Product List</h1>
           <Button
             onClick={handelViewAllClick}
-            className="bg-pharma-emerald hover:bg-pharma-emerald-dark text-white text-sm font-medium underline transition duration-300"
+            className="bg-pharma-emerald hover:bg-pharma-emerald-dark text-white text-sm font-medium transition duration-300"
           >
             View All <ArrowRight />
           </Button>

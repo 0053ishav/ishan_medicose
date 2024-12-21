@@ -183,3 +183,29 @@ export async function fetchMedicalDetails(productId: string) {
     throw new Error;
   }
 }
+
+export async function searchProducts (query: string) {
+  const client = await createAdminClient();
+  const database = client.databases;
+  
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const productCollectionId = process.env.NEXT_PUBLIC_APPWRITE_PRODUCTS_COLLECTION_ID!;
+
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      productCollectionId,
+      [
+        Query.search('name', query),
+        // Query.search('description', query)
+      ]
+    );
+console.log("appwrite Search: ", response.documents);
+
+    return response.documents;
+  } catch (error) {
+    console.error("Error searching products: ", error);
+    throw new Error("Unknown error occurred during search.");
+  }
+
+}
