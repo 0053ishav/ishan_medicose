@@ -67,24 +67,49 @@ const Products = ({ tags }: { tags?: string }) => {
             ))}
           </div>
 
-          { !tags && <div className="flex justify-center mt-4 space-x-4">
-            <Button
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-pharma-emerald-light text-white rounded disabled:opacity-50"
-            >
-              Previous
-            </Button>
-            <span className="flex items-center text-sm font-medium text-slate-700">{`Page ${currentPage} of ${totalPages}`}</span>
-            <Button
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-pharma-emerald-light text-white rounded disabled:opacity-50"
-            >
-              Next
-            </Button>
-          </div>
-          }
+{!tags && (
+  <div className="flex justify-center items-center mt-6 space-x-4">
+    <button
+      onClick={goToPreviousPage}
+      disabled={currentPage === 1}
+      className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+        currentPage === 1
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"
+      }`}
+    >
+      ←
+    </button>
+    <div className="flex items-center space-x-2">
+      {Array.from({ length: totalPages }, (_, index) => (
+        <button
+          key={index + 1}
+          onClick={() => setCurrentPage(index + 1)}
+          className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-all ${
+            currentPage === index + 1
+              ? "bg-pharma-emerald-light text-white"
+              : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+          }`}
+        >
+          {index + 1}
+        </button>
+      ))}
+    </div>
+    <button
+      onClick={goToNextPage}
+      disabled={currentPage === totalPages}
+      className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+        currentPage === totalPages
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"
+      }`}
+    >
+      →
+    </button>
+  </div>
+)}
+
+
         </div>
       )}
     </div>
