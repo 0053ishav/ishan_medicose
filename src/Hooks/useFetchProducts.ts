@@ -1,11 +1,11 @@
-// hooks/useFetchProducts.ts
 import { useEffect, useState } from "react";
 import { fetchProducts } from "@/lib/appwrite";
 
 interface Product {
   id: string;
   name: string;
-  price: string;
+  price: number;
+  discountedPrice?: number;
   imageUrl: string;
   hoverImageUrl: string;
   description: string;
@@ -24,7 +24,9 @@ const useFetchProducts = (tags?: string) => {
       setLoading(true);
       try {
         let productData = await fetchProducts(); 
-
+        console.log("appwrite fetchProducts: ", productData);
+        
+        
         if (tags) {
           productData = productData.filter((product: any) => product.tags === tags);
         }
@@ -33,6 +35,7 @@ const useFetchProducts = (tags?: string) => {
           id: product.$id,
           name: product.name,
           price: product.price,
+          discountedPrice: product.discountedPrice,
           imageUrl: product.imageUrl,
           description: product.description,
           image: product.image,
@@ -42,6 +45,7 @@ const useFetchProducts = (tags?: string) => {
           tags: product.tags,
         }));
 
+        console.log("appwrite formattedProducts: ", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
         console.error("Error fetching data: ", error);

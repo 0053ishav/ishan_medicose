@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchReviews, submitReview } from "@/lib/appwrite";
-import { useToast } from "@/Hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 interface Review {
   rating: number;

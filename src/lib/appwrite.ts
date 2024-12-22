@@ -2,6 +2,14 @@
 import { Client, Account, Databases, Query } from "node-appwrite";
 import { cookies } from "next/headers";
 
+const applyDiscount = (price: number, discountPercentage: number) => {  
+  return Math.round(price - (price * (discountPercentage / 100)));
+};
+
+const capitalizeName = (name: string) => 
+  name.charAt(0).toUpperCase() + name.slice(1);
+
+
 export async function createSessionClient() {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -41,18 +49,31 @@ export async function createAdminClient() {
 }
 
 
-export async function fetchProducts () {
+export async function fetchProducts() {
   const client = await createAdminClient();
   const database = client.databases;
 
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const productCollectionid = process.env.NEXT_PUBLIC_APPWRITE_PRODUCTS_COLLECTION_ID!;
 
-  const response = await database.listDocuments(databaseId, productCollectionid);
-  return response.documents;
+  try {
+    const response = await database.listDocuments(databaseId, productCollectionid);
+    const products = response.documents;
+
+  const productsWithDiscount = products.map(product => {
+    const discountedPrice = applyDiscount(product.price, product.discountPercentage);
+    
+    return { ...product, discountedPrice, name: capitalizeName(product.name) };
+  });
+  return productsWithDiscount;
+
+  } catch (error) {
+    console.error("Error fetching product by ID: ", error);
+    throw new Error("Failed to fetch product details.");
+  }
 }
 
-export async function fetchCategories () {
+export async function fetchCategories() {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -63,7 +84,7 @@ export async function fetchCategories () {
   return response.documents;
 }
 
-export async function fetchProductById (productId: string) {
+export async function fetchProductById(productId: string) {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -76,20 +97,22 @@ export async function fetchProductById (productId: string) {
       productCollectionid,
       productId
     )
+    
+    const result = applyDiscount(response.price, response.discountPercentage);
 
-    return response;
+    return { ...response, discountedPrice: result, name: capitalizeName(response.name) }
   } catch (error) {
     console.error("Error fetching product bt ID: ", error);
     throw new Error("Failed to fetch product details.");
-    
+
   }
 }
 
 
-export async function fetchProductsByCategory (categoryId: string) {
+export async function fetchProductsByCategory(categoryId: string) {
   const client = await createAdminClient();
   const database = client.databases;
-  
+
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const productCollectionId = process.env.NEXT_PUBLIC_APPWRITE_PRODUCTS_COLLECTION_ID!;
 
@@ -97,7 +120,7 @@ export async function fetchProductsByCategory (categoryId: string) {
     const response = await database.listDocuments(
       databaseId,
       productCollectionId,
-            [Query.equal("category", categoryId)] 
+      [Query.equal("category", categoryId)]
     );
     return response.documents;
   } catch (error) {
@@ -109,7 +132,7 @@ export async function fetchProductsByCategory (categoryId: string) {
 export async function fetchReviews(productId: string) {
   const client = await createAdminClient();
   const database = client.databases;
-  
+
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const reviewCollectionId = process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!;
 
@@ -117,7 +140,7 @@ export async function fetchReviews(productId: string) {
     const response = await database.listDocuments(
       databaseId,
       reviewCollectionId,
-      [Query.equal("productId", productId)] 
+      [Query.equal("productId", productId)]
     );
 
     const reviews = response.documents.map((doc) => ({
@@ -136,10 +159,10 @@ export async function fetchReviews(productId: string) {
 }
 
 
-export async function submitReview(productId: string, rating: number, reviewText: string,   userId: string) {
+export async function submitReview(productId: string, rating: number, reviewText: string, userId: string) {
   const client = await createAdminClient();
   const database = client.databases;
-  
+
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const reviewCollectionId = process.env.NEXT_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!;
 
@@ -166,7 +189,7 @@ export async function submitReview(productId: string, rating: number, reviewText
 export async function fetchMedicalDetails(productId: string) {
   const client = await createAdminClient();
   const database = client.databases;
-  
+
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const MedicalDetailsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_MEDICAL_DETAILS_COLLECTION_ID!;
 
@@ -174,7 +197,7 @@ export async function fetchMedicalDetails(productId: string) {
     const response = await database.listDocuments(
       databaseId,
       MedicalDetailsCollectionId,
-      [Query.equal("productId", productId)] 
+      [Query.equal("productId", productId)]
     );
 
     return response;
@@ -184,10 +207,10 @@ export async function fetchMedicalDetails(productId: string) {
   }
 }
 
-export async function searchProducts (query: string) {
+export async function searchProducts(query: string) {
   const client = await createAdminClient();
   const database = client.databases;
-  
+
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const productCollectionId = process.env.NEXT_PUBLIC_APPWRITE_PRODUCTS_COLLECTION_ID!;
 
@@ -200,7 +223,7 @@ export async function searchProducts (query: string) {
         // Query.search('description', query)
       ]
     );
-console.log("appwrite Search: ", response.documents);
+    console.log("appwrite Search: ", response.documents);
 
     return response.documents;
   } catch (error) {
@@ -208,4 +231,52 @@ console.log("appwrite Search: ", response.documents);
     throw new Error("Unknown error occurred during search.");
   }
 
+}
+
+
+export async function fetchCouponByCode(couponCode: string, originalPrice: number) {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const couponsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_COUPONS_COLLECTION_ID!;
+
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      couponsCollectionId,
+      [Query.equal("code", couponCode)]
+    );
+
+    if (response.documents.length === 0) {
+      throw new Error("Coupon code not found");
+    }
+
+    const coupon = response.documents[0];
+
+    // Check if coupon is expired
+    const currentDate = new Date();
+    const expiryDate = new Date(coupon.expiryDate);
+
+    if (expiryDate < currentDate) {
+      throw new Error("Coupon code has expired");
+    }
+
+    // Check if coupon is active
+    if (coupon.status !== "active") {
+      throw new Error("Coupon code is inactive");
+    }
+
+    // Assuming coupon has a field like 'discountPercentage'
+    const discountPercentage = coupon.discountPercentage || 0;
+    const discountedPrice = applyDiscount(originalPrice, discountPercentage);
+
+    return {
+      coupon,
+      discountedPrice,
+    };
+  } catch (error) {
+    console.error("Error fetching coupon: ", error);
+    throw new Error("Failed to validate coupon code");
+  }
 }

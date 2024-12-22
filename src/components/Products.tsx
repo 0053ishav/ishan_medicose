@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import ProductCard from "./ProductCard";
-import useFetchProducts from "@/Hooks/useFetchProducts";
-import { Button } from "./ui/button";
+import ProductCard from "@/components/ProductCard";
+import useFetchProducts from "@/hooks/useFetchProducts";
 
 const Products = ({ tags }: { tags?: string }) => {
   const { loading, products } = useFetchProducts(tags);
@@ -39,7 +38,8 @@ const Products = ({ tags }: { tags?: string }) => {
               key={index}
               id=""
               name=""
-              price=""
+              price={0}
+              discountedPrice={0}
               stock={0}
               inStock={false}
               loading={true}
@@ -56,6 +56,7 @@ const Products = ({ tags }: { tags?: string }) => {
                 id={product.id}
                 name={product.name}
                 price={product.price}
+                discountedPrice={product.discountedPrice}
                 imageUrl={product.imageUrl}
                 hoverImageUrl={product.hoverImageUrl || product.imageUrl}
                 image={product.image}

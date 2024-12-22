@@ -125,6 +125,8 @@ const SearchBar = () => {
     } else {
       router.push(`/product/${id}`);
     }
+    setIsModalOpen(false);
+    setSearchQuery("");
   };
   
   
