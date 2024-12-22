@@ -64,7 +64,7 @@ export async function fetchProducts() {
     const discountedPrice = applyDiscount(product.price, product.discountPercentage);
     
     return { ...product, discountedPrice, name: capitalizeName(product.name) };
-  });
+  });  
   return productsWithDiscount;
 
   } catch (error) {

@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircleIcon } from "lucide-react";
 import { useCart } from "@/hooks/use-CartContext";
 import { useCartSheet } from "@/hooks/use-CartSheetProvider";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 interface ProductDetailUIProps {
   product: any | null;
@@ -17,6 +19,9 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
   loading,
   error,
 }) => {
+
+  const router = useRouter();
+
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { addToCart, cart } = useCart();
@@ -86,7 +91,10 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
       quantity: 1,
     });
   };
-console.log("dp", product.discountedPrice);
+
+  const handleClick = () => {
+    router.push("/contact");
+  }
 
   return (
     <div className="grid grid-cols-12 gap-4 p-4 mt-4">
@@ -143,27 +151,48 @@ console.log("dp", product.discountedPrice);
             <p className="text-sm text-gray-600">₹{product.price}</p>
           )}
           
-          
-          
           </div>
 
           
           <p className="mt-4">{product.description}</p>
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <span className="font-semibold">Stock: </span>
             {product.stock > 0 ? `${product.stock} items` : "Out of Stock"}
-          </div>
-          <button
-            className={`mt-4 px-6 py-2 text-white font-semibold transition-colors ${
+          </div> */}
+          <div className="flex items-center justify-start gap-4  mt-4 w-full">
+
+          <Button
+            className={`px-6 py-2 text-white font-semibold transition-colors ${
               product.inStock
-                ? "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark "
+              ? "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark "
                 : "bg-gray-500 cursor-not-allowed"
-            } rounded-md`}
+            } rounded-full`}
             disabled={!product.inStock}
             onClick={handleAddToCart}
           >
-            {product.inStock ? "Add to Cart" : "Out of Stock"}
-          </button>
+            {(product.inStock && product.stock > 0) ? "Add to Cart" : "Out of Stock"}
+          </Button>
+          {!product.inStock && (
+            <Button
+            onClick={handleClick}
+            className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-full"
+            >
+            Contact Us
+          </Button>  
+          )}
+          <Button
+            onClick={openCart}
+            className="relative md:hidden flex items-center  justify-center px-4 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
+          >
+            View Cart
+            {cart.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </Button>
+            </div>
+
         </div>
       </div>
 
@@ -174,7 +203,7 @@ console.log("dp", product.discountedPrice);
             Your cart is empty! Add items now to proceed to checkout.
           </h3>
           )}
-          <button
+          <Button
             onClick={openCart}
             className="relative flex items-center justify-center w-full h-10 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
           >
@@ -184,7 +213,7 @@ console.log("dp", product.discountedPrice);
                 {cart.length}
               </span>
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

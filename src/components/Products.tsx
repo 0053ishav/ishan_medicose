@@ -40,6 +40,7 @@ const Products = ({ tags }: { tags?: string }) => {
               name=""
               price={0}
               discountedPrice={0}
+              discountPercentage={0}
               stock={0}
               inStock={false}
               loading={true}
@@ -57,6 +58,7 @@ const Products = ({ tags }: { tags?: string }) => {
                 name={product.name}
                 price={product.price}
                 discountedPrice={product.discountedPrice}
+                discountPercentage={product.discountPercentage}
                 imageUrl={product.imageUrl}
                 hoverImageUrl={product.hoverImageUrl || product.imageUrl}
                 image={product.image}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchReviews, submitReview } from "@/lib/appwrite";
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 interface Review {
   rating: number;
@@ -140,13 +141,13 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
       />
 
  
-      <button
+      <Button
         onClick={handleSubmitReview}
         disabled={isSubmitting}
-        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-md disabled:bg-gray-400"
+        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-full disabled:bg-gray-400"
       >
         {isSubmitting ? "Submitting..." : "Submit Review"}
-      </button>
+      </Button>
 
       <div className="mt-8">
         <h3 className="text-xl font-semibold">Reviews</h3>
@@ -176,12 +177,12 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
         )}
 
         {reviews.length > 5 && (
-          <button
+          <Button
             onClick={toggleReviewVisibility}
             className="mt-4 text-pharma-emerald hover:text-pharma-emerald-dark"
           >
             {showAllReviews ? "See Less Reviews" : "See All Reviews"}
-          </button>
+          </Button>
         )}
       </div>
     </div>

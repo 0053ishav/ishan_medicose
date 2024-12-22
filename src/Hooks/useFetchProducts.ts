@@ -6,6 +6,7 @@ interface Product {
   name: string;
   price: number;
   discountedPrice?: number;
+  discountPercentage: number;
   imageUrl: string;
   hoverImageUrl: string;
   description: string;
@@ -36,6 +37,7 @@ const useFetchProducts = (tags?: string) => {
           name: product.name,
           price: product.price,
           discountedPrice: product.discountedPrice,
+          discountPercentage: product.discountPercentage,
           imageUrl: product.imageUrl,
           description: product.description,
           image: product.image,

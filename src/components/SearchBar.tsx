@@ -76,6 +76,12 @@ const SearchBar = () => {
       setIsModalOpen(true);
       inputRef.current?.focus();
     }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setIsModalOpen(false);
+      inputRef.current?.blur();
+    }
   }, []);
 
   useEffect(() => {
@@ -172,7 +178,7 @@ const SearchBar = () => {
                 placeholder="Type to search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-pharma-emerald "
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-pharma-emerald"
               />
             </div>
 
