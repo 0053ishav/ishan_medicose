@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { CartProvider } from "@/hooks/use-CartContext";
+import { CartSheetProvider } from "@/hooks/use-CartSheetProvider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -25,10 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
 
-        {children}
+        <CartProvider>
+        <CartSheetProvider>
+          {children}
+        </CartSheetProvider>
+        </CartProvider> 
       </body>
     </html>
   );
