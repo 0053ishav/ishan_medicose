@@ -179,7 +179,7 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
         {reviews.length > 5 && (
           <Button
             onClick={toggleReviewVisibility}
-            className="mt-4 text-pharma-emerald hover:text-pharma-emerald-dark"
+            className="mt-4 text-pharma-emerald hover:text-pharma-emerald-dark bg-transparent hover:bg-transparent"
           >
             {showAllReviews ? "See Less Reviews" : "See All Reviews"}
           </Button>

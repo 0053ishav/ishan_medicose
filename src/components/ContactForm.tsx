@@ -135,6 +135,7 @@ return (
       </div>
 
       <AlertModal
+        title={success ? "Success" : "Error"}
         isOpen={showModal}
         message={
           loading

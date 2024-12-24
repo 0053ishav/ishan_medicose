@@ -1,6 +1,7 @@
-'use client'
+'use client';
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
+import AlertModal from "@/components/AlertModal";
 
 interface FormField {
   name: string;
@@ -28,6 +29,8 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
   const [formData, setFormData] = useState<any>({});
   const [clickCount, setClickCount] = useState(0);
   const [isTimeout, setIsTimeout] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -85,7 +88,18 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
       }, 5000);
     }
   };
-  
+
+  const handleWhatsAppClick = () => {
+    const whatsappURL = process.env.NEXT_PUBLIC_MOBILE_NUMBER;
+
+    if (whatsappURL) {
+      window.open(whatsappURL, "_blank");
+    } else {
+      setModalMessage("Unable to open WhatsApp chat. Please try again later.");
+      setShowModal(true);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-gray-300 rounded-lg shadow-lg">
       <form onSubmit={handleSubmit}>
@@ -132,16 +146,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
           <button
             className="bg-white fill-foreground p-2 rounded-full shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner"
             aria-label="Chat on WhatsApp"
-            onClick={() =>{ 
-              const whatsappURL = process.env.NEXT_PUBLIC_MOBILE_NUMBER; 
-              console.log("whatsappURL", whatsappURL);
-               
-              if (whatsappURL) {
-                window.open(whatsappURL, "_blank");
-              } else {
-                console.error("WhatsApp URL is not defined in environment variables.");
-              }
-            }}
+            onClick={handleWhatsAppClick}
           >
             <img
               alt="Chat on WhatsApp"
@@ -178,6 +183,15 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
           </button>
         </div>
       </form>
+
+      {showModal && (
+        <AlertModal
+          title="Error"
+          message={modalMessage}
+          onClose={() => setShowModal(false)}
+          isOpen={showModal}
+        />
+      )}
     </div>
   );
 };

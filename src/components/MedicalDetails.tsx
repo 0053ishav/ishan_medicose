@@ -101,6 +101,7 @@ const MedicalDetails: React.FC<MedicalDetailsProps> = ({ productId }) => {
   if (!details) {
     return (
       <div className="p-6 bg-white shadow-md rounded-md text-center mt-12">
+        <div className=" text-center text-2xl font-bold text-gray-800">Medical Details</div>
         <p className="text-red-500 text-xl font-semibold">No Details Available</p>
         <p className="text-gray-600 text-lg">Sorry, we couldn't find any details for the requested product.</p>
       </div>
@@ -111,7 +112,8 @@ const MedicalDetails: React.FC<MedicalDetailsProps> = ({ productId }) => {
   return (
     <div className="p-6 bg-white shadow-md rounded-md mt-12">
       <div className="border-b pb-4 mb-4">
-        <h1 className="text-2xl font-bold text-pharma-emerald">{name}</h1>
+        <div className=" text-center text-2xl font-bold text-gray-800">Medical Details</div>
+        <h1 className="text-2xl font-bold text-gray-800">{name}</h1>
         <p className="text-gray-600">{description}</p>
       </div>
 

@@ -160,7 +160,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 
   {/* Product Image */}
-  <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-sm">
+  <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-sm"
+    onClick={handleCardClick}
+>
     {image || imageUrl ? (
       <>
         <img
@@ -186,7 +188,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   </div>
 
 
-  <div className="flex flex-col  justify-center mt-2">
+  <div className="flex flex-col  justify-center mt-2"
+    onClick={handleCardClick}
+>
 
 <div className="mt-4 text-center group relative">
 
