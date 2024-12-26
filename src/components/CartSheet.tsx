@@ -1,8 +1,123 @@
+// 'use client';
+
+// import { Sheet, SheetContent, SheetClose, SheetTitle } from '@/components/ui/sheet';
+// import { useCart } from '@/hooks/use-CartContext';
+// import { useCartSheet } from '@/hooks/use-CartSheetProvider';
+// import React, { useState } from 'react';
+
+// const CartSheet = () => {
+//   const { cart, removeFromCart, clearCart } = useCart();
+//   const { isCartOpen, closeCart } = useCartSheet();
+
+//   const [couponCode, setCouponCode] = useState<string>('');
+//   const [discount, setDiscount] = useState<number>(0);
+//   const [error, setError] = useState<string>('');
+
+//   // Handle coupon code validation
+//   const handleApplyCoupon = () => {
+//     // Example of simple coupon validation
+//     if (couponCode === 'DISCOUNT10') {
+//       setDiscount(10);
+//       setError('');
+//     } else if (couponCode === 'DISCOUNT20') {
+//       setDiscount(20);
+//       setError('');
+//     } else {
+//       setDiscount(0);
+//       setError('Invalid coupon code.');
+//     }
+//   };
+
+//   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+//   const discountedTotal = total - (total * discount) / 100;
+
+//   return (
+//     <Sheet open={isCartOpen} onOpenChange={(open) => !open && closeCart()}>
+//       <SheetContent side="right">
+//         <SheetTitle>Your Cart</SheetTitle>
+//         <SheetClose asChild>
+//           {/* <button className="absolute top-2 right-2 text-xl">&times;</button> */}
+//         </SheetClose>
+
+//         {cart.length === 0 ? (
+//           <p>Your cart is empty!</p>
+//         ) : (
+//           <div>
+//             <ul>
+//               {cart.map((item) => (
+//                 <li key={item.id} className="flex justify-between mb-4">
+//                   <img
+//                     src={item.imageUrl}
+//                   />
+//                   <span>{item.name}</span>
+//                   <span>₹{item.price} x {item.quantity}</span>
+//                   <button
+//                     onClick={() => removeFromCart(item)}
+//                     className="text-red-500"
+//                   >
+//                     Remove
+//                   </button>
+//                 </li>
+//               ))}
+//             </ul>
+
+//             {/* Coupon Code Section */}
+//             <div className="mt-4">
+//               <input
+//                 type="text"
+//                 placeholder="Enter coupon code"
+//                 value={couponCode}
+//                 onChange={(e) => setCouponCode(e.target.value)}
+//                 className="border p-2 rounded w-full"
+//               />
+//               <button
+//                 onClick={handleApplyCoupon}
+//                 className="mt-2 bg-blue-500 text-white py-2 px-4 rounded"
+//               >
+//                 Apply Coupon
+//               </button>
+//               {error && <div className="text-red-500 mt-2">{error}</div>}
+//             </div>
+
+//             <div className="mt-4 flex justify-between">
+//               <span>Total: ₹{total}</span>
+//               {discount > 0 && <span>Discount: {discount}%</span>}
+//             </div>
+
+//             <div className="mt-4 flex justify-between">
+//               <span>
+//                 <strong>Final Total: ₹{discountedTotal.toFixed(2)}</strong>
+//               </span>
+//               <button onClick={clearCart} className="text-red-500">
+//                 Clear Cart
+//               </button>
+//             </div>
+//           </div>
+//         )}
+
+//         <button
+//           className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md"
+//           disabled={cart.length === 0}
+//         >
+//           Proceed to Checkout
+//         </button>
+//       </SheetContent>
+//     </Sheet>
+//   );
+// };
+
+// export default CartSheet;
+
 'use client';
 
-import { Sheet, SheetContent, SheetClose, SheetTitle } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { useCart } from '@/hooks/use-CartContext';
 import { useCartSheet } from '@/hooks/use-CartSheetProvider';
+import { ArrowRight } from 'lucide-react';
 import React, { useState } from 'react';
 
 const CartSheet = () => {
@@ -10,47 +125,70 @@ const CartSheet = () => {
   const { isCartOpen, closeCart } = useCartSheet();
 
   const [couponCode, setCouponCode] = useState<string>('');
-  const [discount, setDiscount] = useState<number>(0);
-  const [error, setError] = useState<string>('');
+  // const [discount, setDiscount] = useState<number>(0);
+  // const [error, setError] = useState<string>('');
 
-  // Handle coupon code validation
-  const handleApplyCoupon = () => {
-    // Example of simple coupon validation
-    if (couponCode === 'DISCOUNT10') {
-      setDiscount(10);
-      setError('');
-    } else if (couponCode === 'DISCOUNT20') {
-      setDiscount(20);
-      setError('');
-    } else {
-      setDiscount(0);
-      setError('Invalid coupon code.');
-    }
-  };
+  // // Handle coupon code validation
+  // const handleApplyCoupon = () => {
+  //   if (couponCode === 'DISCOUNT10') {
+  //     setDiscount(10);
+  //     setError('');
+  //   } else if (couponCode === 'DISCOUNT20') {
+  //     setDiscount(20);
+  //     setError('');
+  //   } else {
+  //     setDiscount(0);
+  //     setError('Invalid coupon code.');
+  //   }
+  // };
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const discountedTotal = total - (total * discount) / 100;
+  // const discountedTotal = total - (total * discount) / 100;
 
   return (
     <Sheet open={isCartOpen} onOpenChange={(open) => !open && closeCart()}>
-      <SheetContent side="right">
-        <SheetTitle>Your Cart</SheetTitle>
-        <SheetClose asChild>
-          {/* <button className="absolute top-2 right-2 text-xl">&times;</button> */}
-        </SheetClose>
+      <SheetContent side="right" className="bg-white shadow-lg rounded-lg p-4 overflow-auto">
+        <SheetTitle className="text-lg font-semibold text-gray-800">
+          Your Cart
+        </SheetTitle>
 
         {cart.length === 0 ? (
-          <p>Your cart is empty!</p>
+          <div className="flex flex-col items-center justify-center h-full">
+            <p className="text-gray-500 text-center text-lg">
+              Your cart is empty! 🛒
+            </p>
+            <button
+              onClick={closeCart}
+              className="mt-4 px-6 py-2 bg-pharma-emerald text-white rounded-full hover:bg-pharma-emerald-dark"
+            >
+              Continue Shopping
+            </button>
+          </div>
         ) : (
-          <div>
-            <ul>
+          <div className="mt-4 space-y-6">
+            {/* Cart Items */}
+            <ul className="space-y-4">
               {cart.map((item) => (
-                <li key={item.id} className="flex justify-between mb-4">
-                  <span>{item.name}</span>
-                  <span>₹{item.price} x {item.quantity}</span>
+                <li
+                  key={item.id}
+                  className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow-sm"
+                >
+                  <div className="flex items-center">
+                    <img
+                      src={item.imageUrl || '/file_not_found.jpg'}
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                    <div className="ml-4">
+                      <p className="text-gray-700 font-medium">{item.name}</p>
+                      <p className="text-gray-500 text-sm">
+                        ₹{item.price} x {item.quantity}
+                      </p>
+                    </div>
+                  </div>
                   <button
                     onClick={() => removeFromCart(item)}
-                    className="text-red-500"
+                    className="text-red-500 hover:text-red-600 text-sm"
                   >
                     Remove
                   </button>
@@ -59,45 +197,62 @@ const CartSheet = () => {
             </ul>
 
             {/* Coupon Code Section */}
-            <div className="mt-4">
+            {/* <div className="flex flex-col gap-2">
               <input
                 type="text"
                 placeholder="Enter coupon code"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
-                className="border p-2 rounded w-full"
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 onClick={handleApplyCoupon}
-                className="mt-2 bg-blue-500 text-white py-2 px-4 rounded"
+                className="w-full py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
               >
                 Apply Coupon
               </button>
-              {error && <div className="text-red-500 mt-2">{error}</div>}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+            </div> */}
+
+            {/* Total Section */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-black">
+                <span>Subtotal:</span>
+                <span>₹{total.toFixed(2)}</span>
+              </div>
+              <span className='text-sm text-muted-foreground'>Shipping and taxes calculated at checkout.</span>
+              {/* {discount > 0 && (
+                <div className="flex justify-between text-green-500">
+                  <span>Discount:</span>
+                  <span>- {discount}%</span>
+                </div>
+              )} */}
             </div>
 
-            <div className="mt-4 flex justify-between">
-              <span>Total: ₹{total}</span>
-              {discount > 0 && <span>Discount: {discount}%</span>}
-            </div>
-
-            <div className="mt-4 flex justify-between">
-              <span>
-                <strong>Final Total: ₹{discountedTotal.toFixed(2)}</strong>
-              </span>
-              <button onClick={clearCart} className="text-red-500">
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => alert('Proceed to checkout')}
+                className="w-full py-2 bg-pharma-emerald text-white rounded-full hover:bg-pharma-emerald-dark"
+              >
+                Proceed to Checkout
+              </button>
+              <button
+                onClick={clearCart}
+                className="w-full py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+              >
                 Clear Cart
               </button>
             </div>
+            <div className='flex items-center justify-center cursor-pointer'>
+              <span className='text-muted-foreground'>or</span>
+              <div onClick={closeCart} className='flex flow-row'>
+              <span className='text-pharma-emerald ml-2'>Continue Shopping</span>
+              <ArrowRight className='text-pharma-emerald'/>
+              </div>
+            </div>
           </div>
         )}
-
-        <button
-          className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md"
-          disabled={cart.length === 0}
-        >
-          Proceed to Checkout
-        </button>
       </SheetContent>
     </Sheet>
   );

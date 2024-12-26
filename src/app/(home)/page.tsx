@@ -2,6 +2,7 @@
 import Bestsellers from "@/components/BestSellers";
 import Categories from "@/components/Categories";
 import Featured from "@/components/Featured";
+import BannerCarousel from "@/components/BannerCarousel";
 import Products from "@/components/Products";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -21,6 +22,7 @@ export default function Home() {
           Featured Categories
         </h1>
         <Categories />
+        <BannerCarousel />
 
         <Bestsellers/>
         <Featured/>

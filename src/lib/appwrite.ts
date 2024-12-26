@@ -1,5 +1,5 @@
 "use server";
-import { Client, Account, Databases, Query } from "node-appwrite";
+import { Client, Account, Databases, Query, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 
 const applyDiscount = (price: number, discountPercentage: number) => {  
@@ -44,10 +44,12 @@ export async function createAdminClient() {
     },
     get databases() {
       return new Databases(client);
+    },
+    get storages() {
+      return new Storage(client);
     }
   };
 }
-
 
 export async function fetchProducts() {
   const client = await createAdminClient();
@@ -278,5 +280,26 @@ export async function fetchCouponByCode(couponCode: string, originalPrice: numbe
   } catch (error) {
     console.error("Error fetching coupon: ", error);
     throw new Error("Failed to validate coupon code");
+  }
+}
+
+export async function fetchBanners() {
+  const client = await createAdminClient();
+  const storage = client.storages;
+
+  const bucketId = process.env.NEXT_PUBLIC_APPWRITE_BANNER_BUCKET_ID!;
+
+  try {
+    const response = await storage.listFiles(bucketId);
+
+    const banners = response.files.map((file) => ({
+      id: file.$id,
+      name: file.name,
+      url: `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${bucketId}/files/${file.$id}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`
+    }))
+    return banners;
+  } catch (error) {
+    console.error('Error fetching banners: ', error);
+    throw new Error('Unknown error occured while fetching banners.');
   }
 }

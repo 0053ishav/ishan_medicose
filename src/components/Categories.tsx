@@ -102,7 +102,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
     
 
       {loading
-        ? Array.from({ length: 7 }).map((_, index) => (
+        ? Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
               className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
