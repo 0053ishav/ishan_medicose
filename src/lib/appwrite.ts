@@ -225,7 +225,6 @@ export async function searchProducts(query: string) {
         // Query.search('description', query)
       ]
     );
-    console.log("appwrite Search: ", response.documents);
 
     return response.documents;
   } catch (error) {

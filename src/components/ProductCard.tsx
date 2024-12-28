@@ -148,11 +148,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
    {/* Availability Badge */}
    <div className="relative mt-2 flex items-center justify-center">
     {isAvailable ? (
-      <span className="bg-pharma-emerald text-white text-xs font-semibold px-2 py-1 rounded-full">
+      <span className="bg-pharma-emerald text-white text-xs font-semibold px-2 py-1 rounded-md">
         In Stock
       </span>
     ) : (
-      <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+      <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">
         Out of Stock
       </span>
     )}
@@ -161,7 +161,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
     {/* Discount Badge */}
     {discountPercentage && (
-    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm ">
+    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-sm ">
       {discountPercentage}%
     </span>
   )}
@@ -170,7 +170,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   {/* Add to Cart Button */}
   <button
-    className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-full shadow-md transition-transform duration-300 hover:scale-[1.02] ${
+    className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
       isAvailable
         ? "bg-pharma-emerald hover:bg-pharma-emerald-dark"
         : "bg-gray-400 cursor-not-allowed"

@@ -25,7 +25,6 @@ const useFetchProducts = (tags?: string) => {
       setLoading(true);
       try {
         let productData = await fetchProducts(); 
-        console.log("appwrite fetchProducts: ", productData);
         
         
         if (tags) {
@@ -47,7 +46,6 @@ const useFetchProducts = (tags?: string) => {
           tags: product.tags,
         }));
 
-        console.log("appwrite formattedProducts: ", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
         console.error("Error fetching data: ", error);

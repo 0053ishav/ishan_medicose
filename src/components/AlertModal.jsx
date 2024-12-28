@@ -27,7 +27,7 @@ const AlertModal = ({ isOpen, title, message, onClose }) => {
           </div>
           <Button
             onClick={handleClose}
-            className={`${buttonColor} text-white font-semibold py-2 px-4 rounded-full w-full transition duration-300 ease-in-out mt-4`}
+            className={`${buttonColor} text-white font-semibold py-2 px-4 rounded-md w-full transition duration-300 ease-in-out mt-4`}
           >
             Close
           </Button>

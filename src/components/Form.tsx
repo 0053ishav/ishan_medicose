@@ -144,7 +144,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
         ))}
         <div className="flex justify-between z-50 relative">
           <button
-            className="bg-white fill-foreground p-2 rounded-full shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner"
+            className="bg-white fill-foreground p-2 rounded-md shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner"
             aria-label="Chat on WhatsApp"
             onClick={handleWhatsAppClick}
           >
@@ -157,7 +157,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
           <button
             onClick={handleClick}
-            className={`bg-white fill-foreground p-2 rounded-full shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner -rotate-90 ${
+            className={`bg-white fill-foreground p-2 rounded-md shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner -rotate-90 ${
               isTimeout ? "bg-gray-500 cursor-not-allowed" : ""
             }`}
             disabled={isTimeout}

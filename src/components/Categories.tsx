@@ -88,7 +88,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
                 <img
                   src={category.image}
                   alt={category.name}
-                  className="w-8 h-8 rounded-full mr-3 object-cover"
+                  className="w-8 h-8 rounded-md mr-3 object-cover"
                 />
                 <span className="text-s font-medium text-gray-700">
                   {category.name}
@@ -105,9 +105,9 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
         ? Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
             >
-              <Skeleton className="w-14 h-14 rounded-full mb-2" />
+              <Skeleton className="w-14 h-14 rounded-md mb-2" />
               <Skeleton className="w-16 h-4" />
             </div>
           ))
@@ -115,12 +115,12 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
             <div
               key={category.id}
               onClick={() => handleCategoryClick(category)}
-              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
             >
               <img
                 src={category.image}
                 alt={category.name}
-                className="w-14 h-14 rounded-full object-cover"
+                className="w-14 h-14 rounded-md object-cover"
               />
               <span className="mt-2 text-sm font-medium text-gray-700">
                 {category.name}

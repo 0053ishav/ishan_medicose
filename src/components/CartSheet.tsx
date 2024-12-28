@@ -159,7 +159,7 @@ const CartSheet = () => {
             </p>
             <button
               onClick={closeCart}
-              className="mt-4 px-6 py-2 bg-pharma-emerald text-white rounded-full hover:bg-pharma-emerald-dark"
+              className="mt-4 px-6 py-2 bg-pharma-emerald text-white rounded-md hover:bg-pharma-emerald-dark"
             >
               Continue Shopping
             </button>
@@ -207,7 +207,7 @@ const CartSheet = () => {
               />
               <button
                 onClick={handleApplyCoupon}
-                className="w-full py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
+                className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
               >
                 Apply Coupon
               </button>
@@ -233,13 +233,13 @@ const CartSheet = () => {
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => alert('Proceed to checkout')}
-                className="w-full py-2 bg-pharma-emerald text-white rounded-full hover:bg-pharma-emerald-dark"
+                className="w-full py-2 bg-pharma-emerald text-white rounded-md hover:bg-pharma-emerald-dark"
               >
                 Proceed to Checkout
               </button>
               <button
                 onClick={clearCart}
-                className="w-full py-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                className="w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
                 Clear Cart
               </button>

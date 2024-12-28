@@ -2,20 +2,27 @@
 import React, { useEffect, useState } from "react";
 import HeaderLogo from "@/components/HeaderLogo";
 import Navigation from "@/components/Navigation";
-// import { ClerkLoaded, ClerkLoading, UserButton } from '@clerk/nextjs'
 import SearchBar from "@/components/SearchBar";
 import { useCartSheet } from "@/hooks/use-CartSheetProvider";
 import { useCart } from "@/hooks/use-CartContext";
-import { Button } from "./ui/button";
-// import WelcomeMsg from '@/components/WelcomeMsg'
-// import { Filters } from '@/components/filters'
+import { Button } from "@/components/ui/button";
+import HeaderBox from "./HeaderBox";
+import { getLoggedInUser } from "@/actions/user.actions";
 
 const Header = () => {
   const { openCart } = useCartSheet();
   const { cart } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<any>(null);
 
-   useEffect(() => {
+  useEffect(() => {
+    const fetchUser = async () => {
+      const loggedIn = await getLoggedInUser();
+      setLoggedInUser(loggedIn);
+    }
+
+    fetchUser();
+
      const handleScroll = () => {
        if (window.scrollY > 50) {
          setIsScrolled(true);
@@ -32,18 +39,25 @@ const Header = () => {
    }, []);
 
   return (
-    <header className="bg-gradient-to-b from-pharma-emerald to-pharma-emerald-light px-4 py-8 lg:px-14 pb-20">
+    <header className="bg-gradient-to-b from-pharma-emerald to-pharma-emerald-light px-4 md:py-8 lg:px-14 md:pb-20">
       <div className="max-w-screen-2xl mx-auto">
-        <div className="h-full flex items-center justify-between mb-14">
+        <div className="h-full flex items-center justify-between md:mb-14">
           <div className="flex items-center lg:gap-16">
             <HeaderLogo />
             <Navigation />
-          </div>
+            </div>
+            <div className="flex gap-4">
+            <HeaderBox 
+            type="header"
+            title="Welcome"
+            user={loggedInUser?.firstName || 'Guest'}
+            subtext=""
+            />
          
           {!isScrolled && (
             <Button
               onClick={openCart}
-              className="relative flex items-center justify-center w-14 h-14 rounded-full bg-white fill-foreground p-2 shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl hover:bg-pharma-emerald-light/10 active:scale-95 active:shadow-inner"
+              className="relative flex items-center justify-center w-12 h-12 rounded-full bg-white fill-foreground p-2 shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl hover:bg-pharma-emerald-light/10 active:scale-95 active:shadow-inner"
             >
               <img src="/shopping-cart.png"  className="-ml-1 w-7 h-6 text-gray-700" alt="shopping cart" />
               {cart.length > 0 && (
@@ -67,18 +81,11 @@ const Header = () => {
               )}
             </button>
           )}
-
-          {/* <ClerkLoaded>
-                  <UserButton />
-                </ClerkLoaded>
-                <ClerkLoading> */}
-          {/* <Loader2 className='size-8 animate-spin text-slate-100'/> */}
-          {/* </ClerkLoading> */}
         </div>
-        {/* <WelcomeMsg />
-            <Filters /> */}
-        <div className="flex justify-center items-center">
-          <SearchBar />
+        </div>
+
+        <div className="hidden md:flex justify-center items-center">
+          <SearchBar autoFocus={false} />
         </div>
       </div>
     </header>

@@ -144,7 +144,7 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
       <Button
         onClick={handleSubmitReview}
         disabled={isSubmitting}
-        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-full disabled:bg-gray-400"
+        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-md disabled:bg-gray-400"
       >
         {isSubmitting ? "Submitting..." : "Submit Review"}
       </Button>

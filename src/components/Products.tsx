@@ -75,7 +75,7 @@
 //     <button
 //       onClick={goToPreviousPage}
 //       disabled={currentPage === 1}
-//       className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+//       className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
 //         currentPage === 1
 //           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
 //           : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"
@@ -88,7 +88,7 @@
 //         <button
 //           key={index + 1}
 //           onClick={() => setCurrentPage(index + 1)}
-//           className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-all ${
+//           className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all ${
 //             currentPage === index + 1
 //               ? "bg-pharma-emerald-light text-white"
 //               : "bg-gray-100 text-gray-500 hover:bg-gray-200"
@@ -101,7 +101,7 @@
 //     <button
 //       onClick={goToNextPage}
 //       disabled={currentPage === totalPages}
-//       className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+//       className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
 //         currentPage === totalPages
 //           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
 //           : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"
@@ -204,7 +204,7 @@ const Products = ({ tags }: { tags?: string }) => {
               <button
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
-                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
                   currentPage === 1
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                     : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"
@@ -217,7 +217,7 @@ const Products = ({ tags }: { tags?: string }) => {
                   <button
                     key={index + 1}
                     onClick={() => setCurrentPage(index + 1)}
-                    className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-all ${
+                    className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all ${
                       currentPage === index + 1
                         ? "bg-pharma-emerald-light text-white"
                         : "bg-gray-100 text-gray-500 hover:bg-gray-200"
@@ -230,7 +230,7 @@ const Products = ({ tags }: { tags?: string }) => {
               <button
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
-                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
                   currentPage === totalPages
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                     : "bg-pharma-emerald-light text-white hover:scale-110 hover:bg-pharma-emerald-dark"

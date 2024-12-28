@@ -89,6 +89,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
       name: product.name,
       price: parseFloat(product.price),
       quantity: 1,
+      imageUrl: product.imageurl
     });
   };
 
@@ -166,7 +167,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
               product.inStock
               ? "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark "
                 : "bg-gray-500 cursor-not-allowed"
-            } rounded-full`}
+            } rounded-md`}
             disabled={!product.inStock}
             onClick={handleAddToCart}
           >
@@ -175,18 +176,18 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           {!product.inStock && (
             <Button
             onClick={handleClick}
-            className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-full"
+            className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-md"
             >
             Contact Us
           </Button>  
           )}
           <Button
             onClick={openCart}
-            className="relative md:hidden flex items-center  justify-center px-4 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
+            className="relative md:hidden flex items-center  justify-center px-4 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-md"
           >
             View Cart
             {cart.length > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-md w-5 h-5 flex items-center justify-center">
                 {cart.length}
               </span>
             )}
@@ -205,11 +206,11 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           )}
           <Button
             onClick={openCart}
-            className="relative flex items-center justify-center w-full h-10 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
+            className="relative flex items-center justify-center w-full h-10 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-md"
           >
             View Cart
             {cart.length > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-md w-5 h-5 flex items-center justify-center">
                 {cart.length}
               </span>
             )}

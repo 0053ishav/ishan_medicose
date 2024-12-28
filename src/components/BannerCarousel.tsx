@@ -43,7 +43,7 @@ const BannerCarousel = () => {
       ) : (
         banners.length > 0 && (
           <img
-            src={banners[currentIndex].url || "/file_not_found.jpg"}
+            src={banners[currentIndex]?.url || "/file_not_found.jpg"}
             alt={banners[currentIndex].name || "Banner"}
             className="w-full h-full object-cover transition-opacity duration-1000"
           />

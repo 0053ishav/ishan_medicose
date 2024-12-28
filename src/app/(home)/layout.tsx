@@ -1,6 +1,7 @@
 import Header from '@/components/Header'
 import React from 'react'
 import { Toaster } from "@/components/ui/toaster"
+import BottomNavigation from '@/components/BottomNavigation'
 type Props = {
     children: React.ReactNode
 }
@@ -12,6 +13,7 @@ const DashboardLayout = ({ children }: Props) => {
     <Toaster/>
         {children}
     </main>
+    <BottomNavigation/>
     </>
   )
 }
