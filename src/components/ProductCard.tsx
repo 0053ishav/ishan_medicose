@@ -9,7 +9,7 @@ interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  discountedPrice: number | undefined;
+  discountedPrice: number;
   imageUrl?: string;
   image?: string;
   hoverImageUrl?: string;
@@ -55,7 +55,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     addToCart({
       id,
       name,
-      price: price,
+      price,
+      discountedPrice,
       quantity: 1,
       imageUrl,
     });
@@ -172,7 +173,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   <button
     className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
       isAvailable
-        ? "bg-pharma-emerald hover:bg-pharma-emerald-dark"
+        ? "bg-pharma-emerald-light hover:bg-pharma-emerald"
         : "bg-gray-400 cursor-not-allowed"
     }`}
     disabled={!isAvailable}

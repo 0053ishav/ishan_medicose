@@ -28,6 +28,7 @@ declare type LoginUser = {
     state: string;
     postalCode: string;
     dateOfBirth: string;
+    cart: string[];
   };
   
   declare type NewUserParams = {
@@ -56,4 +57,12 @@ declare type LoginUser = {
     title: string;
     subtext: string;
     user?: string;
+  }
+
+  export interface ProductCart {
+    $id: string;
+    name: string;
+    price: number;
+    discountedPrice: number;
+    imageUrl: string;
   }

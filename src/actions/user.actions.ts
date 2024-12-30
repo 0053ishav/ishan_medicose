@@ -4,6 +4,7 @@ import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "@/lib/appwrite";
 import { cookies } from "next/headers";
 import { parseStringify } from "@/lib/utils";
+import { getUserInfoProps, signInProps, SignUpParams } from "@/types";
 
 const {
     NEXT_PUBLIC_APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -22,7 +23,7 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
     if (user.documents.length === 0) return null;
     return parseStringify(user.documents[0]);
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -101,7 +102,7 @@ export async function getLoggedInUser() {
 
     return parseStringify(user);
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return null;
   }
 }

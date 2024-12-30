@@ -56,7 +56,7 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
        {!showAllCategories &&  <div className="relative">
         <Button
           onClick={() => setShowAll((prev) => !prev)}
-          className="flex items-center pc-4 py-2 bg-pharma-emerald-light text-white rounded-md hover:bg-pharma-emerald transition"
+          className="flex items-center pc-4 py-2 bg-pharma-emerald-light text-white rounded-full hover:bg-pharma-emerald transition"
         >
           All Categories
           <svg
@@ -105,9 +105,9 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
         ? Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
             >
-              <Skeleton className="w-14 h-14 rounded-md mb-2" />
+              <Skeleton className="w-14 h-14 rounded-full mb-2" />
               <Skeleton className="w-16 h-4" />
             </div>
           ))
@@ -115,12 +115,12 @@ const Categories = ({ showAllCategories = false}: CategoriesProps) => {
             <div
               key={category.id}
               onClick={() => handleCategoryClick(category)}
-              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+              className="flex flex-col items-center justify-center w-28 h-28 bg-gray-100 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
             >
               <img
                 src={category.image}
                 alt={category.name}
-                className="w-14 h-14 rounded-md object-cover"
+                className="w-14 h-14 rounded-full object-cover"
               />
               <span className="mt-2 text-sm font-medium text-gray-700">
                 {category.name}

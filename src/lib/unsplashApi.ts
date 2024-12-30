@@ -7,7 +7,6 @@ const getUnsplashImage = async (query = "pharmacy") => {
     const response = await axios.get(
       `https://api.unsplash.com/photos/random?query=${query}&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}&per_page=1`
     );
-    // console.log(JSON.stringify(response));
     
     return response.data?.urls?.regular;
   } catch (error) {

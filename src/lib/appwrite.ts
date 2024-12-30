@@ -1,13 +1,24 @@
 "use server";
 import { Client, Account, Databases, Query, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
+import { ProductCart } from "@/types";
+import { CartItemDB } from "@/hooks/use-CartContext";
 
-const applyDiscount = (price: number, discountPercentage: number) => {  
+const applyDiscount = (price: number, discountPercentage: number) => {
   return Math.round(price - (price * (discountPercentage / 100)));
 };
 
-const capitalizeName = (name: string) => 
+const capitalizeName = (name: string) =>
   name.charAt(0).toUpperCase() + name.slice(1);
+
+const encodeCartItem = (item: { id: string; quantity: number }): string => {
+  return `${item.id}:${item.quantity}`;
+};
+
+const decodeCartItem = (encodedItem: string): { id: string; quantity: number } => {
+  const [id, quantity] = encodedItem.split(':');
+  return { id, quantity: parseInt(quantity, 10) };
+};
 
 
 export async function createSessionClient() {
@@ -62,12 +73,12 @@ export async function fetchProducts() {
     const response = await database.listDocuments(databaseId, productCollectionid);
     const products = response.documents;
 
-  const productsWithDiscount = products.map(product => {
-    const discountedPrice = applyDiscount(product.price, product.discountPercentage);
-    
-    return { ...product, discountedPrice, name: capitalizeName(product.name) };
-  });  
-  return productsWithDiscount;
+    const productsWithDiscount = products.map(product => {
+      const discountedPrice = applyDiscount(product.price, product.discountPercentage);
+
+      return { ...product, discountedPrice, name: capitalizeName(product.name) };
+    });
+    return productsWithDiscount;
 
   } catch (error) {
     console.error("Error fetching product by ID: ", error);
@@ -99,7 +110,7 @@ export async function fetchProductById(productId: string) {
       productCollectionid,
       productId
     )
-    
+
     const result = applyDiscount(response.price, response.discountPercentage);
 
     return { ...response, discountedPrice: result, name: capitalizeName(response.name) }
@@ -110,6 +121,33 @@ export async function fetchProductById(productId: string) {
   }
 }
 
+export async function fetchProductsByIds(productIds: string[]): Promise<ProductCart[]> {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const productCollectionId = process.env.NEXT_PUBLIC_APPWRITE_PRODUCTS_COLLECTION_ID!;
+  try {
+    const response = await database.listDocuments(databaseId, productCollectionId, [
+      Query.equal("$id", productIds),
+    ]);
+
+    const products = response.documents.map((product) => {
+      const discountedPrice = applyDiscount(product.price, product.discountPercentage);
+      return {
+        ...product,
+        discountedPrice,
+        price: product.price,
+        name: capitalizeName(product.name),
+        imageUrl: product.imageUrl,
+      };
+    });
+    return products;
+  } catch (error) {
+    console.error("Error fetching products by IDs:", error);
+    throw new Error("Failed to fetch product details.");
+  }
+}
 
 export async function fetchProductsByCategory(categoryId: string) {
   const client = await createAdminClient();
@@ -300,5 +338,38 @@ export async function fetchBanners() {
   } catch (error) {
     console.error('Error fetching banners: ', error);
     throw new Error('Unknown error occured while fetching banners.');
+  }
+}
+
+export const updateUserCartInDb = async (userId: string, cart: CartItemDB[]) => {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const userCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID!;
+
+  try {
+    const cartData = cart.map(encodeCartItem);
+    await database.updateDocument(databaseId, userCollectionId, userId, { cart: cartData });
+  } catch (error) {
+    console.error('Error updating user cart in database:', error);
+  }
+};
+
+
+export const fetchUserCart = async (userId: string): Promise<{ id: string; quantity: number }[]> => {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const userCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID!;
+  try {
+   const userDoc = await database.getDocument(databaseId, userCollectionId, userId);
+
+   const cartData = (userDoc.cart as string[] || []).map(decodeCartItem);
+   return cartData;
+  } catch (error) {
+    console.error('Error fetching user cart from database:', error);
+    return [];
   }
 }

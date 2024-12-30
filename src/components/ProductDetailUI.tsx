@@ -88,6 +88,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
       id: product.$id,
       name: product.name,
       price: parseFloat(product.price),
+      discountedPrice: parseFloat(product.discountedPrice),
       quantity: 1,
       imageUrl: product.imageurl
     });

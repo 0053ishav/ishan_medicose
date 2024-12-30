@@ -46,7 +46,7 @@ const Header = () => {
             <HeaderLogo />
             <Navigation />
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center justify-center">
             <HeaderBox 
             type="header"
             title="Welcome"

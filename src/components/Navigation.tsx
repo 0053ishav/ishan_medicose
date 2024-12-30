@@ -4,9 +4,10 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useMedia } from "react-use";
 import NavButton from "@/components/NavButton";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
+import Image from "next/image";
 
 const routes = [
   {
@@ -59,7 +60,16 @@ const Navigation = () => {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="px-2">
-          <SheetTitle></SheetTitle>
+          <SheetTitle>
+          <Image
+            src={"/Logo/logo-no-background.svg"}
+            alt="Ishan Medicose logo"
+            width={200}
+            height={200}
+           />
+          </SheetTitle>
+          <SheetDescription>
+          </SheetDescription>
           {/* <SheetHeader> */}
 
           <nav className="flex flex-col gap-y-2 pt-6">
@@ -74,10 +84,6 @@ const Navigation = () => {
               </Button>
             ))}
           </nav>
-          {/* </SheetHeader>
-  <SheetTitle className='hidden'>
-    
-    </SheetTitle> */}
         </SheetContent>
       </Sheet>
     );

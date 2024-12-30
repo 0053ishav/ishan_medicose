@@ -102,6 +102,8 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-gray-300 rounded-lg shadow-lg">
+      <h1 className="font-bold text-2xl">Contact Form</h1>
+      <p className="mb-4 text-sm text-muted-foreground">Fill out the form below, and one of our representatives will get back to you shortly.</p>
       <form onSubmit={handleSubmit}>
         {successMessage && (
           <div className="text-green-600 text-center mb-4">
@@ -192,6 +194,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
           isOpen={showModal}
         />
       )}
+      <p className="text-sm text-muted-foreground mt-2">We respect your privacy and will never share your information with third parties.</p>
     </div>
   );
 };
