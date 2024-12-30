@@ -39,7 +39,7 @@ const Header = () => {
    }, []);
 
   return (
-    <header className="bg-gradient-to-b from-pharma-emerald to-pharma-emerald-light px-4 md:py-8 lg:px-14 md:pb-20">
+    <header className="bg-gradient-to-b from-pharma-emerald to-pharma-emerald-light px-4 py-2 md:py-8 lg:px-14 md:pb-20">
       <div className="max-w-screen-2xl mx-auto">
         <div className="h-full flex items-center justify-between md:mb-14">
           <div className="flex items-center lg:gap-16">

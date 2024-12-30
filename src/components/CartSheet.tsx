@@ -39,11 +39,12 @@ const CartSheet = () => {
   return (
     <Sheet open={isCartOpen} onOpenChange={(open) => !open && closeCart()}>
       <SheetContent side="right" className="bg-white shadow-lg rounded-lg p-4 overflow-auto">
-        <SheetTitle className="text-lg font-semibold text-gray-800">
+        <SheetTitle className="text-xl font-semibold text-gray-800">
           Your Cart
         </SheetTitle>
-        <SheetDescription>
-        Review the items in your cart before proceeding. Adjust quantities or remove items as needed, and click "Checkout" when you're ready to complete your order.          </SheetDescription>
+        <SheetDescription className='text-xs'>
+        Review the items in your cart before proceeding. Adjust quantities or remove items as needed, and click "Checkout" when you're ready to complete your order.
+        </SheetDescription>
         {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full">
             <p className="text-gray-500 text-center text-lg">

@@ -36,16 +36,18 @@ const BannerCarousel = () => {
     return () => clearInterval(interval);
   }, [banners]);
 
+  console.log(banners);
   return (
     <div className="relative w-full h-auto overflow-hidden mt-12 rounded-md">
       {loading ? (
         <Skeleton className="relative w-full aspect-[2/1] sm:aspect-[4/1] lg:aspect-[16/4]" />
       ) : (
+        
         banners.length > 0 && (
           <img
             src={banners[currentIndex]?.url || "/file_not_found.jpg"}
-            alt={banners[currentIndex].name || "Banner"}
-            className="w-full h-full object-cover transition-opacity duration-1000"
+            alt={banners[currentIndex]?.name || "Banner"}
+            className="w-full aspect-[2/1] sm:aspect-[4/1] lg:aspect-[16/4] object-cover transition-opacity duration-1000"
           />
         )
       )}

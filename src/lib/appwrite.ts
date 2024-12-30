@@ -364,12 +364,36 @@ export const fetchUserCart = async (userId: string): Promise<{ id: string; quant
   const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
   const userCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID!;
   try {
-   const userDoc = await database.getDocument(databaseId, userCollectionId, userId);
+    const userDoc = await database.getDocument(databaseId, userCollectionId, userId);
 
-   const cartData = (userDoc.cart as string[] || []).map(decodeCartItem);
-   return cartData;
+    const cartData = (userDoc.cart as string[] || []).map(decodeCartItem);
+    return cartData;
   } catch (error) {
     console.error('Error fetching user cart from database:', error);
     return [];
+  }
+}
+
+export const fetchAnnouncement = async () => {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const AnnouncementCollectionId = process.env.NEXT_PUBLIC_APPWRITE_ANNOUNCEMENT_COLLECTION_ID!;
+  try {
+    const response = await database.listDocuments(
+      databaseId,
+      AnnouncementCollectionId,
+      [Query.equal("isActive", true)],
+    )
+
+    if (response.documents.length > 0) {
+      return response.documents[0]
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching announcement:", error);
+    throw new Error("Failed to fetch announcement");
   }
 }
