@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/use-CartContext";
 import { useCartSheet } from "@/hooks/use-CartSheetProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ProductDetailUIProps {
   product: any | null;
@@ -106,31 +107,48 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           <>
           
           <div className="w-3/4 h-auto relative overflow-hidden rounded-md">
-            <img
+            <Image
               src={currentImage}
               alt={product.name}
-              className="object-cover w-full h-auto transition-opacity duration-300"
+              layout="responsive"
+              width={400}
+              height={400}
+              className="object-cover"
+              priority
             />
           </div>
 
           <div className="flex gap-2 mt-4">
             {images.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Thumbnail ${index}`}
-                onClick={() => setSelectedImage(image)}
-                className={`w-16 h-16 rounded-md object-cover cursor-pointer border-2 ${
-                  currentImage === image
-                    ? "border-pharma-emerald"
-                    : "border-gray-300"
-                }`}
-              />
+                  <div
+                  key={index}
+                  className={`w-16 h-16 relative cursor-pointer border-2 rounded-md ${
+                    currentImage === image
+                      ? "border-pharma-emerald"
+                      : "border-gray-300"
+                  }`}
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <Image
+                    src={image}
+                    alt={`Thumbnail ${index}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
             ))}
           </div>
           </>
         ) : (
-          <img src="/file_not_found.jpg" className="object-cover" alt="image not found" />
+          <Image 
+          src="/file_not_found.jpg" 
+          alt="image not found"
+          layout="responsive"
+          width={400}
+          height={400}
+          className="rounded-md" 
+          />
         )}
 
         </div>

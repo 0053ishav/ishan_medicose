@@ -4,6 +4,7 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/use-CartContext";
+import Image from "next/image";
 
 interface ProductCardProps {
   id: string;
@@ -89,24 +90,30 @@ const ProductCard: React.FC<ProductCardProps> = ({
 >
     {image || imageUrl ? (
       <>
-        <img
-          src={image || imageUrl}
+        <Image
+          src={image || imageUrl || "/file_not_found.jpg"}
           alt={name}
           className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {hoverImageUrl && (
-          <img
+          <Image
             src={hoverImageUrl}
             alt={name}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 hover:opacity-100"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
       </>
     ) : (
-      <img
+      <Image
         src="/file_not_found.jpg"
         alt="Not Found"
         className="object-cover w-full h-full rounded-lg"
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     )}
   </div>

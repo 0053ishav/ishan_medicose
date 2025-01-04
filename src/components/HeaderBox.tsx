@@ -15,10 +15,10 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
   };
 
   const handleLogoutClick = () => {
-    logoutAccount()
-    router.push("/");
+    logoutAccount().then(() => {
+      window.location.reload()
+    });
   };
-
   return (
     <div
       className="relative flex flex-col"
@@ -55,7 +55,7 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
 
       {showPopup && (
         <div className="absolute top-10 left-0 w-40 bg-white shadow-lg rounded-md p-4 z-50">
-          {user && user !== "Guest" ? (
+          {user && user != 'Guest' ? (
             <button
               onClick={handleLogoutClick}
               className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
@@ -65,7 +65,7 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
           ) : (
             <div className="flex flex-col gap-2">
               <button
-                onClick={() => router.push("/sign-up")}
+                onClick={() => router.push("/sign-in")}
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
               >
                 Login

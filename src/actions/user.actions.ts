@@ -39,15 +39,27 @@ export const signIn = async ({ email, password }: signInProps) => {
       secure: true,
     });
 
-    const user = await getUserInfo({ userId: session.userId })
+    const user = await getUserInfo({ userId: session.userId });
 
     if (!user) throw new Error('User not found');
 
-    return parseStringify(user);
-  } catch (error) {
-    console.error('Error', error);
+    return { user: parseStringify(user), flag: true };
+  } catch (error: any) {
+    console.error('SignIn Error:', error);
+
+    let errorMessage = 'An error occurred during sign-in';
+    if (error.code === 401) {
+      errorMessage = 'Invalid credentials. Please check your email and password.';
+    } else if (error.code === 404) {
+      errorMessage = 'User not found.';
+    } else if (error.code === 500) {
+      errorMessage = 'Internal server error. Please try again later.';
+    }
+
+    return { error: errorMessage, flag: false };
   }
-}
+};
+
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
   const { email, firstName, lastName } = userData;
@@ -86,14 +98,26 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
     });
 
     return parseStringify(newUser);
-  } catch (error) {
-    console.error('Error', error);
+  } catch (error: any) {
+    if (error.code === 409) {
+      console.error('User already exists with this email.');
+      throw new Error('This email is already registered. Please use a different one.');
+    }
+
+    console.error('Error during sign-up process: ', error);
+    throw new Error('An error occurred during sign-up. Please try again later.');
   }
 }
 
-export async function getLoggedInUser() {
+export const  getLoggedInUser = async () => {
   try {
-    const { account } = await createSessionClient();
+    const sessionClient = await createSessionClient();
+
+    if (!sessionClient) {
+      console.warn("User is not logged in");
+      return null;
+    }
+    const { account } = sessionClient;
     const result = await account.get();
 
     if (!result) return null;
@@ -109,12 +133,19 @@ export async function getLoggedInUser() {
 
 export const logoutAccount = async () => {
   try {
-    const { account } = await createSessionClient();
+    const sessionClient = await createSessionClient();
 
-    (await cookies()).delete('appwrite-session');
+    if (!sessionClient) {
+      console.warn("User is not logged in");
+      return null;
+    }
 
+    const { account } = sessionClient;
+
+   (await cookies()).delete('appwrite-session');
     await account.deleteSession('current');
   } catch (error) {
+    console.error("Error during logout:", error);
     return null;
   }
-}
+};

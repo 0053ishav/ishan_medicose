@@ -9,6 +9,7 @@ import {
 import { useCart } from '@/hooks/use-CartContext';
 import { useCartSheet } from '@/hooks/use-CartSheetProvider';
 import { ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const CartSheet = () => {
@@ -34,7 +35,13 @@ const CartSheet = () => {
   // };
 
   const total = cart.reduce((acc, item) => acc + item.discountedPrice * item.quantity, 0);
-  // const discountedTotal = total - (total * discount) / 100;
+  
+  const router = useRouter();
+
+  const handleCheckout= () => {
+    alert('Proceed to checkout')
+    router.push("/checkout");
+  }
 
   return (
     <Sheet open={isCartOpen} onOpenChange={(open) => !open && closeCart()}>
@@ -128,7 +135,7 @@ const CartSheet = () => {
             {/* Action Buttons */}
             <div className="flex flex-col gap-2">
               <button
-                onClick={() => alert('Proceed to checkout')}
+                onClick={handleCheckout}
                 className="w-full py-2 bg-pharma-emerald text-white rounded-md hover:bg-pharma-emerald-dark"
               >
                 Proceed to Checkout

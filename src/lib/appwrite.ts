@@ -29,6 +29,7 @@ export async function createSessionClient() {
   const session = (await cookies()).get("appwrite-session");
   if (!session || !session.value) {
     throw new Error("No session");
+    return null
   }
 
   client.setSession(session.value);
@@ -357,7 +358,7 @@ export const updateUserCartInDb = async (userId: string, cart: CartItemDB[]) => 
 };
 
 
-export const fetchUserCart = async (userId: string): Promise<{ id: string; quantity: number }[]> => {
+export async function fetchUserCart (userId: string): Promise<{ id: string; quantity: number }[]> {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -374,7 +375,7 @@ export const fetchUserCart = async (userId: string): Promise<{ id: string; quant
   }
 }
 
-export const fetchAnnouncement = async () => {
+export async function fetchAnnouncement()  {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -397,3 +398,29 @@ export const fetchAnnouncement = async () => {
     throw new Error("Failed to fetch announcement");
   }
 }
+
+export const resetPassword = async (email: string) => {
+  const client = await createAdminClient();
+  const account = client.account;
+
+  try {
+    await account.createRecovery(email, process.env.NEXT_PUBLIC_RESET_URL!);
+
+    return true;
+  } catch (error) {
+    console.error("Error sending recovery email", error);
+    throw new Error("Unable to send recovery email");
+  }
+};
+
+
+export const updatePassword = async (userId: string, secret: string, newPassword: string) => {
+  const client = await createAdminClient();
+  const account = client.account;
+  try {
+    await account.updateRecovery(userId, secret, newPassword);
+  } catch (error) {
+    console.error("Error resetting password: ", error);
+    throw new Error("Failed to reset password.");
+  }
+};

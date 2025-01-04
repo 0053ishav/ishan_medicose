@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { fetchBanners } from '@/lib/appwrite';
-import { Skeleton } from '@/components/ui/skeleton';
+import React, { useEffect, useState } from "react";
+import { fetchBanners } from "@/lib/appwrite";
+import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 interface Banners {
-  id: string,
-  name: string,
-  url: string
+  id: string;
+  name: string;
+  url: string;
 }
 
 const BannerCarousel = () => {
@@ -19,7 +20,7 @@ const BannerCarousel = () => {
         const fetchedBanners = await fetchBanners();
         setBanners(fetchedBanners);
       } catch (error) {
-        console.error('Error fetching banners:', error);
+        console.error("Error fetching banners:", error);
       } finally {
         setLoading(false);
       }
@@ -36,18 +37,19 @@ const BannerCarousel = () => {
     return () => clearInterval(interval);
   }, [banners]);
 
-  console.log(banners);
   return (
     <div className="relative w-full h-auto overflow-hidden mt-12 rounded-md">
       {loading ? (
         <Skeleton className="relative w-full aspect-[2/1] sm:aspect-[4/1] lg:aspect-[16/4]" />
       ) : (
-        
         banners.length > 0 && (
-          <img
+          <Image
             src={banners[currentIndex]?.url || "/file_not_found.jpg"}
             alt={banners[currentIndex]?.name || "Banner"}
-            className="w-full aspect-[2/1] sm:aspect-[4/1] lg:aspect-[16/4] object-cover transition-opacity duration-1000"
+            layout="responsive"
+            width={1200}
+            height={400}
+            className="object-cover transition-opacity duration-1000"
           />
         )
       )}

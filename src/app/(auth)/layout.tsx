@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/toaster";
 import Image from "next/image";
 
 export default function RootLayout({
@@ -17,6 +18,7 @@ export default function RootLayout({
           />
         </div>
       </div>
+         <Toaster />
       {children}
     </main>
   );

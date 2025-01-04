@@ -6,8 +6,9 @@ import { useMedia } from "react-use";
 import NavButton from "@/components/NavButton";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react";
+import { Loader2, MenuIcon } from "lucide-react";
 import Image from "next/image";
+import useLogo from "@/hooks/use-Logo";
 
 const routes = [
   {
@@ -39,12 +40,21 @@ const Navigation = () => {
   const pathname = usePathname();
   const isMobile = useMedia("(max-width: 1024px)", false);
 
+  const logo = process.env.NEXT_PUBLIC_APPWRITE_LOGO_AUTH_MOBILE_NAVIGATION!;
+  const { logoUrl, loading } = useLogo(logo, "nav");
+  
   const onClick = (href: string) => {
     router.push(href);
     setIsOpen(false);
   };
-
   if (isMobile) {
+
+    if (loading) {
+      return <Loader2 size={20} className="w-24 animate-spin text-white"/>;
+    }
+  if (!logoUrl) {
+    return <div className="text-white">Logo not found</div>;
+  }
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger>
@@ -62,7 +72,7 @@ const Navigation = () => {
         <SheetContent side="left" className="px-2">
           <SheetTitle>
           <Image
-            src={"/Logo/logo-no-background.svg"}
+            src={logoUrl}
             alt="Ishan Medicose logo"
             width={200}
             height={200}
