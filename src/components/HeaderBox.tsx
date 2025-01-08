@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HeaderBoxProps } from "@/types";
 import { logoutAccount } from "@/actions/user.actions";
+import { Heart, LogOut, ShoppingBag, User } from "lucide-react";
 
-const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => {
+const HeaderBox = ({
+  type = "title",
+  title,
+  subtext,
+  user,
+}: HeaderBoxProps) => {
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
 
@@ -16,7 +22,7 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
 
   const handleLogoutClick = () => {
     logoutAccount().then(() => {
-      window.location.reload()
+      window.location.reload();
     });
   };
   return (
@@ -27,9 +33,7 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
     >
       <h1 className="text-24 lg:text-30 font-semibold text-gray-900">
         {type === "title" && user && (
-          <span className="text-bankGradient">
-            &nbsp;{user}
-          </span>
+          <span className="text-bankGradient">&nbsp;{user}</span>
         )}
       </h1>
       <p className="text-14 lg:text-16 font-normal text-gray-600">{subtext}</p>
@@ -41,9 +45,7 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
         >
           {user && user !== "Guest" ? (
             <span className="text-bankGradient flex flex-row">
-             <span className="hidden md:flex">
-               {title}
-              </span>
+              <span className="hidden md:flex">{title}</span>
               &nbsp;
               {user}
             </span>
@@ -54,14 +56,38 @@ const HeaderBox = ({ type = "title", title, subtext, user }: HeaderBoxProps) => 
       )}
 
       {showPopup && (
-        <div className="absolute top-10 left-0 w-40 bg-white shadow-lg rounded-md p-4 z-50">
-          {user && user != 'Guest' ? (
-            <button
-              onClick={handleLogoutClick}
-              className="w-full bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
-            >
-              Logout
-            </button>
+        <div className="absolute top-10 left-0 w-40 bg-white shadow-lg rounded-md p-3 z-50">
+          {user && user != "Guest" ? (
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => router.push("/account")}
+                className="w-full flex items-center text-black py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                <User className="w-5 h-5 mr-2" />
+                Account
+              </button>
+              <button
+                onClick={() => router.push("/orders")}
+                className="w-full flex items-center text-black py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                <ShoppingBag className="w-5 h-5 mr-2" />
+                Orders
+              </button>
+              <button
+                onClick={() => router.push("/wishlist")}
+                className="w-full flex items-center text-black py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                <Heart className="w-5 h-5 mr-2" />
+                Wishlist
+              </button>
+              <button
+                onClick={handleLogoutClick}
+                className="w-full flex items-center bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+              >
+                <LogOut className="w-5 h-5 mr-2" />
+                Logout
+              </button>
+            </div>
           ) : (
             <div className="flex flex-col gap-2">
               <button

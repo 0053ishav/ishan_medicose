@@ -27,7 +27,11 @@ const BannerCarousel = () => {
     };
 
     getBanners();
+    if( !banners) {
+      getBanners();
+    }
   }, []);
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,7 +53,7 @@ const BannerCarousel = () => {
             layout="responsive"
             width={1200}
             height={400}
-            className="object-cover transition-opacity duration-1000"
+            className="object-cover transition-opacity duration-1000 w-full aspect-[2/1] sm:aspect-[4/1] lg:aspect-[16/4]"
           />
         )
       )}

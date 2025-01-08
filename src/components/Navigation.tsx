@@ -16,10 +16,6 @@ const routes = [
     label: "Home",
   },
   {
-    href: "/aboutus",
-    label: "About Us",
-  },
-  {
     href: "/product",
     label: "Products",
   },

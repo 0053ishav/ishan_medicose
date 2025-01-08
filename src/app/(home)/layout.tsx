@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import { Toaster } from "@/components/ui/toaster";
 import BottomNavigation from "@/components/BottomNavigation";
 import AnnouncementBar from "@/components/AnnouncementBar";
+import Footer from "@/components/Footer";
 
 type Props = {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ const DashboardLayout = ({ children }: Props) => {
           {children}
         </main>
         <BottomNavigation />
+        <Footer/>
       </div>
     </>
   );
