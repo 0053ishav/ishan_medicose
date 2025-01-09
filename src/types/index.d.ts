@@ -8,6 +8,7 @@ declare type SignUpParams = {
     dateOfBirth: string;
     email: string;
     password: string;
+    phone: string;
   };
 
   

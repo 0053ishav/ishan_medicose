@@ -72,6 +72,7 @@ const CartSheet = () => {
                 <li
                   key={item.id}
                   className="flex items-center justify-between bg-gray-100 p-4 rounded-md shadow-sm"
+                  onClick={() =>  router.push(`/product/${item.id}`)}
                 >
                   <div className="flex items-center">
                     <img

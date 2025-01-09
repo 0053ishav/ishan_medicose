@@ -3,6 +3,7 @@ import { Client, Account, Databases, Query, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { ProductCart } from "@/types";
 import { CartItemDB } from "@/hooks/use-CartContext";
+import { getLoggedInUser } from "@/actions/user.actions";
 
 const applyDiscount = (price: number, discountPercentage: number) => {
   return Math.round(price - (price * (discountPercentage / 100)));
@@ -358,7 +359,7 @@ export const updateUserCartInDb = async (userId: string, cart: CartItemDB[]) => 
 };
 
 
-export async function fetchUserCart (userId: string): Promise<{ id: string; quantity: number }[]> {
+export async function fetchUserCart(userId: string): Promise<{ id: string; quantity: number }[]> {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -375,7 +376,7 @@ export async function fetchUserCart (userId: string): Promise<{ id: string; quan
   }
 }
 
-export async function fetchAnnouncement()  {
+export async function fetchAnnouncement() {
   const client = await createAdminClient();
   const database = client.databases;
 
@@ -424,3 +425,91 @@ export const updatePassword = async (userId: string, secret: string, newPassword
     throw new Error("Failed to reset password.");
   }
 };
+
+
+export const newsletterSubscription = async (email: string, action: "subscribe" | "unsubscribe") => {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const newsletterCollectionId = process.env.NEXT_PUBLIC_APPWRITE_NEWSLETTER_COLLECTION_ID!;
+
+  try {
+    const listResponse = await database.listDocuments(databaseId, newsletterCollectionId, [
+      Query.equal("email", email)
+    ]);
+
+    if (listResponse.total > 0) {
+      const existingDoc = listResponse.documents[0];
+
+      if (action === "subscribe") {
+        // await database.updateDocument(databaseId, newsletterCollectionId, existingDoc.$id, { subscribed: true });
+        return { success: true, message: "Successfully subscribed!" };
+      } else if (action === "unsubscribe") {
+        await database.updateDocument(databaseId, newsletterCollectionId, existingDoc.$id, { subscribed: false });
+        return { success: true, message: "Successfully unsubscribed!" };
+      } else {
+        throw new Error("Invalid action provided.");
+      }
+    } else {
+      if (action === "subscribe") {
+        await database.createDocument(databaseId, newsletterCollectionId, "unique()", { email, subscribed: true });
+        return { success: true, message: "Thank you for subscribing!" };
+      } else {
+        throw new Error("Email not found for unsubscribing.");
+      }
+    }
+  } catch (error: any) {
+    return { success: false, message: error.message || "An error occurred." };
+  }
+};
+
+export async function fetchUserWishlist(userId: string): Promise<string[]> {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const userCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID!;
+
+  try {
+    const userDoc = await database.getDocument(databaseId, userCollectionId, userId);
+    return userDoc.wish || [];
+  } catch (error) {
+    console.error("Error fetching wishlist:", error);
+    throw new Error("Failed to fetch wishlist.");
+  }
+}
+
+
+export async function updateWishlist(productId: string, add: boolean): Promise<void> {
+  const client = await createAdminClient();
+  const database = client.databases;
+
+  const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+  const userCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USER_COLLECTION_ID!;
+
+  try {
+    const user = await getLoggedInUser();
+    const userId = user.$id;
+
+    const userDocument = await database.getDocument(databaseId, userCollectionId, userId);
+
+    let currentWishlist: string[] = userDocument.wish || [];
+
+
+    if (add) {
+      if (!currentWishlist.includes(productId)) {
+        currentWishlist.push(productId);
+      }
+    } else {
+      currentWishlist = currentWishlist.filter((id) => id !== productId);
+    }
+
+    const result = await database.updateDocument(databaseId, userCollectionId, userId, {
+      wish: currentWishlist,
+    });
+  } catch (error) {
+    console.error('Error updating wishlist:', error);
+    throw new Error('Failed to update wishlist.');
+  }
+}

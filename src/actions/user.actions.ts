@@ -149,3 +149,61 @@ export const logoutAccount = async () => {
     return null;
   }
 };
+
+
+export const signUpWithGoogleDB = async (userId: string, email: string, name: string) => {
+  try {
+    const { account, databases } = await createAdminClient();
+
+    // Check if the user already exists in the database
+    const existingUser = await databases.listDocuments(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    if (existingUser.documents.length > 0) {
+      // User already exists; create a session
+      const session = await account.createSession(userId, (await cookies()).get("appwrite-session")?.value || "");
+
+      (await cookies()).set("appwrite-session", session.secret, {
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+        secure: true,
+      });
+
+      return parseStringify(existingUser.documents[0]);
+    }
+
+    // If user doesn't exist, create the user in the database
+    const [firstName, ...lastNameParts] = name.split(" ");
+    const lastName = lastNameParts.join(" ");
+
+    const newUser = await databases.createDocument(
+      DATABASE_ID!,
+      USER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        userId,
+        email,
+        firstName,
+        lastName,
+      }
+    );
+
+    const session = await account.createSession(userId, (await cookies()).get("appwrite-session")?.value || "");
+
+    (await cookies()).set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
+    return parseStringify(newUser);
+  } catch (error: any) {
+    console.error("Error during Google sign-up:", error);
+    throw new Error("Google sign-up failed. Please try again.");
+  }
+};

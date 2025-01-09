@@ -1,8 +1,12 @@
 import React from 'react'
+import WishlistProducts from "@/components/WishlistProducts"
 
 const WishlistPage = () => {
   return (
-    <div>WishlistPage</div>
+    <>
+      {/* <div>WishlistPage</div> */}
+      <WishlistProducts/>
+    </>
   )
 }
 

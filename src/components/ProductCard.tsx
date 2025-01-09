@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/use-CartContext";
 import Image from "next/image";
+import { updateWishlist } from "@/lib/appwrite";
 
 interface ProductCardProps {
   id: string;
@@ -43,6 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
   const handleCardClick = () => {
     if (context === "categories" && categoryId && categoryName) {
@@ -64,6 +66,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const isAvailable = (inStock && stock > 0);
+
+  const handleWishlistClick = async () => {
+    try {
+      setIsInWishlist(!isInWishlist);
+      await updateWishlist(id, !isInWishlist);
+    } catch (error) {
+      console.error('Error updating wishlist:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -188,6 +199,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
   >
     {isAvailable ? "Add to Cart" : "Out of Stock"}
   </button>
+
+{/* Add to Wishlist Button */}
+<button
+        className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
+          isInWishlist ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+        }`}
+        onClick={handleWishlistClick}
+        disabled={isInWishlist}
+      >
+        {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
+      </button>
 
 </div>
 

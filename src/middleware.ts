@@ -3,9 +3,7 @@ import { getLoggedInUser } from "@/actions/user.actions";
 
 export async function middleware(request: Request) {
   const user = await getLoggedInUser();
-  console.log(user);
   
-
   if (!user) {
     console.warn("Redirecting unauthenticated user to sign-in page");
     const signInUrl = new URL("/sign-in", request.url);

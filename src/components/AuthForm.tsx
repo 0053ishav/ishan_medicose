@@ -14,7 +14,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/actions/user.actions";
 import { useToast } from "@/hooks/use-toast";
-
+import { signUpWithGoogle } from "@/auth/oauth";
 
 const AuthForm = ({ type }: { type: string }) => {
   const { toast } = useToast();
@@ -37,6 +37,7 @@ const AuthForm = ({ type }: { type: string }) => {
       state: "",
       postalCode: "",
       dateOfBirth: "",
+      phone: "",
     },
   });
 
@@ -59,6 +60,7 @@ const AuthForm = ({ type }: { type: string }) => {
             dateOfBirth: data.dateOfBirth!,
             email: data.email,
             password: data.password,
+            phone: data.phone!,
           };
           await signUp(userData);
 
@@ -89,13 +91,16 @@ const AuthForm = ({ type }: { type: string }) => {
             variant: "destructive",
           });
         }
-
       }
     } catch (error) {
       console.error("Error during authentication: ", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleGoogleAuth = async () => {
+    await signUpWithGoogle();
   };
 
   return (
@@ -109,12 +114,8 @@ const AuthForm = ({ type }: { type: string }) => {
             alt="Ishan Medicose logo"
           />
           <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            <span className="text-[#398378] mr-1">
-            Ishan 
-            </span>
-            <span className="text-[#2dc8a6]">
-              Medicose
-              </span>
+            <span className="text-[#398378] mr-1">Ishan</span>
+            <span className="text-[#2dc8a6]">Medicose</span>
           </h1>
         </Link>
         <div className="flex flex-col gap-1 md:gap-3">
@@ -125,6 +126,19 @@ const AuthForm = ({ type }: { type: string }) => {
             Please enter your details
           </p>
         </div>
+        {/* <Button
+          onClick={handleGoogleAuth}
+          variant="outline"
+          className="bg-white border border-gray-300 text-gray-800 hover:bg-gray-100 rounded-md px-4 py-2 flex items-center justify-center gap-2"
+        >
+          <Image
+            src="/google-icon.svg"
+            alt="Google Logo"
+            width={18}
+            height={18}
+          />
+          Google
+        </Button> */}
       </header>
 
       <Form {...form}>
@@ -184,6 +198,12 @@ const AuthForm = ({ type }: { type: string }) => {
                   placeholder="YYYY-MM-DD"
                 />
               </div>
+              <CustomInput
+                control={form.control}
+                name="phone"
+                label="Phone Number"
+                placeholder="Enter your phone number"
+              />
             </>
           )}
 
@@ -201,8 +221,10 @@ const AuthForm = ({ type }: { type: string }) => {
             label="Password"
             placeholder="Enter your password"
           />
-          {type != 'sign-up' && (
-            <p className="text-slate-700"><Link href="/forgot-password">Forgot Password?</Link></p>
+          {type != "sign-up" && (
+            <p className="text-slate-700">
+              <Link href="/forgot-password">Forgot Password?</Link>
+            </p>
           )}
           <div className="flex flex-col gap-4">
             <Button type="submit" className="form-btn" disabled={isLoading}>
