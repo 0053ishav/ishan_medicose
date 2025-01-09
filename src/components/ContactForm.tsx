@@ -56,7 +56,6 @@ const ContactForm = () => {
         templateParams,
         "YGj73JeqXFcvpfQJU"
       );
-      console.log("Email sent successfully:", result);
       setSuccessMessage(
         "Thank you for contacting us! We will get back to you soon."
       );
@@ -135,6 +134,7 @@ return (
       </div>
 
       <AlertModal
+        title={success ? "Success" : "Error"}
         isOpen={showModal}
         message={
           loading

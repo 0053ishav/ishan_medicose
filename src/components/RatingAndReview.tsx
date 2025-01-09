@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { fetchReviews, submitReview } from "@/lib/appwrite";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { getLoggedInUser } from "@/actions/user.actions";
+import { ToastAction } from "@radix-ui/react-toast";
+import Link from "next/link";
 
 interface Review {
   rating: number;
@@ -50,6 +53,24 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
   }, [productId]);
 
   const handleSubmitReview = async () => {
+
+    const user = await getLoggedInUser();
+
+    if (!user) {
+      toast({
+        title: "Login Required",
+        description: "You need to sign in to submit a review.",
+        variant: "destructive",
+        action: (<ToastAction altText="Sign In" className=" bg-white text-red-600 p-1 rounded-md border border-red-500 shadow-md hover:bg-red-100 transition duration-300">
+          <Link href={"/sign-in"} className="text-red-600 font-medium no-underline">
+            Sign In
+          </Link>
+        </ToastAction>)
+      });
+      return;
+    }
+
+
     if (rating === 0 || reviewText.trim() === "") {
       toast({
         title: "",
@@ -144,7 +165,7 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
       <Button
         onClick={handleSubmitReview}
         disabled={isSubmitting}
-        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-full disabled:bg-gray-400"
+        className="mt-4 px-6 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white rounded-md disabled:bg-gray-400"
       >
         {isSubmitting ? "Submitting..." : "Submit Review"}
       </Button>
@@ -179,7 +200,7 @@ const RatingAndReview: React.FC<RatingAndReviewProps> = ({ productId }) => {
         {reviews.length > 5 && (
           <Button
             onClick={toggleReviewVisibility}
-            className="mt-4 text-pharma-emerald hover:text-pharma-emerald-dark"
+            className="mt-4 text-pharma-emerald hover:text-pharma-emerald-dark bg-transparent hover:bg-transparent"
           >
             {showAllReviews ? "See Less Reviews" : "See All Reviews"}
           </Button>

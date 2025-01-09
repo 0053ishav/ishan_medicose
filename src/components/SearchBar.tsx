@@ -10,7 +10,7 @@ interface Product {
   description: string;
 }
 
-const SearchBar = () => {
+const SearchBar = ({ autoFocus }: { autoFocus?: boolean }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -22,6 +22,16 @@ const SearchBar = () => {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+
+    if(autoFocus) {
+
+      setIsModalOpen(true);
+      setTimeout(() => inputRef.current?.focus(), 0); 
+    }
+      
+  }, [autoFocus])
 
   useEffect(() => {
     if (filteredProducts.length === 0 && searchQuery.trim() !== "") {

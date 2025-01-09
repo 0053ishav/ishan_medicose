@@ -4,18 +4,16 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useMedia } from "react-use";
 import NavButton from "@/components/NavButton";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react";
+import { Loader2, MenuIcon } from "lucide-react";
+import Image from "next/image";
+import useLogo from "@/hooks/use-Logo";
 
 const routes = [
   {
     href: "/",
     label: "Home",
-  },
-  {
-    href: "/aboutus",
-    label: "About Us",
   },
   {
     href: "/product",
@@ -38,12 +36,21 @@ const Navigation = () => {
   const pathname = usePathname();
   const isMobile = useMedia("(max-width: 1024px)", false);
 
+  const logo = process.env.NEXT_PUBLIC_APPWRITE_LOGO_AUTH_MOBILE_NAVIGATION!;
+  const { logoUrl, loading } = useLogo(logo, "nav");
+  
   const onClick = (href: string) => {
     router.push(href);
     setIsOpen(false);
   };
-
   if (isMobile) {
+
+    if (loading) {
+      return <Loader2 size={20} className="w-24 animate-spin text-white"/>;
+    }
+  if (!logoUrl) {
+    return <div className="text-white">Logo not found</div>;
+  }
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger>
@@ -59,7 +66,16 @@ const Navigation = () => {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="px-2">
-          <SheetTitle></SheetTitle>
+          <SheetTitle>
+          <Image
+            src={logoUrl}
+            alt="Ishan Medicose logo"
+            width={200}
+            height={200}
+           />
+          </SheetTitle>
+          <SheetDescription>
+          </SheetDescription>
           {/* <SheetHeader> */}
 
           <nav className="flex flex-col gap-y-2 pt-6">
@@ -74,10 +90,6 @@ const Navigation = () => {
               </Button>
             ))}
           </nav>
-          {/* </SheetHeader>
-  <SheetTitle className='hidden'>
-    
-    </SheetTitle> */}
         </SheetContent>
       </Sheet>
     );

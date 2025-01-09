@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { fetchProductsByCategory } from "@/lib/appwrite";
 import ProductCard from "@/components/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Carousel, CarouselItem, CarouselPrevious, CarouselNext, CarouselContent } from "@/components/ui/carousel"; // ShadCN Carousel components
+
 
 const CategoryPage = () => {
 
@@ -62,10 +64,13 @@ const CategoryPage = () => {
       <h1 className="text-2xl font-bold mb-6 mt-12 text-slate-700">
         Products in "{name}"
       </h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+      <div>
+      <Carousel className="w-full">
+      <CarouselContent>
         {products.map((product) => (
+<CarouselItem key={product.$id} className="lg:basis-1/5 sm:basis-1/3">
+          
           <ProductCard
-            key={product.id}
             id={product.$id}
             name={product.name}
             price={product.price}
@@ -75,10 +80,17 @@ const CategoryPage = () => {
             stock={product.stock}
             inStock={product.inStock}
             categoryId={categoryId}
+            discountedPrice={product.discountedPrice}
+            discountPercentage={product.discountPercentage}
             categoryName={categoryName}
             context="categories"
           />
+           </CarouselItem>
         ))}
+         </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
       </div>
     </div>
   );

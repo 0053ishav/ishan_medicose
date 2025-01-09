@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/use-CartContext";
 import { useCartSheet } from "@/hooks/use-CartSheetProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ProductDetailUIProps {
   product: any | null;
@@ -88,7 +89,9 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
       id: product.$id,
       name: product.name,
       price: parseFloat(product.price),
+      discountedPrice: parseFloat(product.discountedPrice),
       quantity: 1,
+      imageUrl: product.imageurl
     });
   };
 
@@ -104,31 +107,48 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           <>
           
           <div className="w-3/4 h-auto relative overflow-hidden rounded-md">
-            <img
+            <Image
               src={currentImage}
               alt={product.name}
-              className="object-cover w-full h-auto transition-opacity duration-300"
+              layout="responsive"
+              width={400}
+              height={400}
+              className="object-cover"
+              priority
             />
           </div>
 
           <div className="flex gap-2 mt-4">
             {images.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`Thumbnail ${index}`}
-                onClick={() => setSelectedImage(image)}
-                className={`w-16 h-16 rounded-md object-cover cursor-pointer border-2 ${
-                  currentImage === image
-                    ? "border-pharma-emerald"
-                    : "border-gray-300"
-                }`}
-              />
+                  <div
+                  key={index}
+                  className={`w-16 h-16 relative cursor-pointer border-2 rounded-md ${
+                    currentImage === image
+                      ? "border-pharma-emerald"
+                      : "border-gray-300"
+                  }`}
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <Image
+                    src={image}
+                    alt={`Thumbnail ${index}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
             ))}
           </div>
           </>
         ) : (
-          <img src="/file_not_found.jpg" className="object-cover" alt="image not found" />
+          <Image 
+          src="/file_not_found.jpg" 
+          alt="image not found"
+          layout="responsive"
+          width={400}
+          height={400}
+          className="rounded-md" 
+          />
         )}
 
         </div>
@@ -166,7 +186,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
               product.inStock
               ? "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark "
                 : "bg-gray-500 cursor-not-allowed"
-            } rounded-full`}
+            } rounded-md`}
             disabled={!product.inStock}
             onClick={handleAddToCart}
           >
@@ -175,18 +195,18 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           {!product.inStock && (
             <Button
             onClick={handleClick}
-            className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-full"
+            className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-md"
             >
             Contact Us
           </Button>  
           )}
           <Button
             onClick={openCart}
-            className="relative md:hidden flex items-center  justify-center px-4 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
+            className="relative md:hidden flex items-center  justify-center px-4 py-2 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-md"
           >
             View Cart
             {cart.length > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-md w-5 h-5 flex items-center justify-center">
                 {cart.length}
               </span>
             )}
@@ -205,11 +225,11 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
           )}
           <Button
             onClick={openCart}
-            className="relative flex items-center justify-center w-full h-10 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-full"
+            className="relative flex items-center justify-center w-full h-10 bg-pharma-emerald hover:bg-pharma-emerald-dark text-white font-semibold transition-colors rounded-md"
           >
             View Cart
             {cart.length > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-sm rounded-md w-5 h-5 flex items-center justify-center">
                 {cart.length}
               </span>
             )}

@@ -1,15 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/use-CartContext";
+import Image from "next/image";
+import { updateWishlist } from "@/lib/appwrite";
 
 interface ProductCardProps {
   id: string;
   name: string;
   price: number;
-  discountedPrice: number | undefined;
+  discountedPrice: number;
   imageUrl?: string;
   image?: string;
   hoverImageUrl?: string;
@@ -42,6 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const router = useRouter();
   const { addToCart } = useCart();
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
   const handleCardClick = () => {
     if (context === "categories" && categoryId && categoryName) {
@@ -55,12 +58,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
     addToCart({
       id,
       name,
-      price: price,
+      price,
+      discountedPrice,
       quantity: 1,
+      imageUrl,
     });
   };
 
   const isAvailable = (inStock && stock > 0);
+
+  const handleWishlistClick = async () => {
+    try {
+      setIsInWishlist(!isInWishlist);
+      await updateWishlist(id, !isInWishlist);
+    } catch (error) {
+      console.error('Error updating wishlist:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -74,84 +88,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   return (
-    // <div
-    //   key={id}
-    //   className="border rounded-lg shadow-sm p-2 relative bg-white transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer"
-    // >
-    //   <div>
-    //   <span className="absolute z-10 top-1 left-1 bg-pharma-emerald text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
-    //         {discountPercentage}%
-    //       </span>
-    //   </div>
-    //   <div onClick={handleCardClick}>
-    //     {isAvailable ? (
-    //       <span className="absolute z-10 top-1 right-1 bg-pharma-emerald text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
-    //         In Stock
-    //       </span>
-    //     ) : (
-    //       <span className="absolute z-10 top-1 right-1 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
-    //         Out of Stock
-    //       </span>
-    //     )}
-
-    //     {/* Product Image with Hover Effect */}
-    //     <div className="w-24 h-24 mx-auto relative overflow-hidden">
-    //       {image || imageUrl ? (
-    //         <>
-    //           <img
-    //             src={image || imageUrl}
-    //             alt={name}
-    //             className="object-cover w-full h-full rounded-md transition-opacity duration-300 hover:opacity-0"
-    //           />
-    //           {hoverImageUrl && (
-    //             <img
-    //               src={hoverImageUrl}
-    //               alt={name}
-    //               className="absolute top-0 left-0 w-full h-full object-cover rounded-md opacity-0 transition-opacity duration-300 hover:opacity-100"
-    //             />
-    //           )}
-    //         </>
-    //       ) : (
-    //         <img
-    //           src="/file_not_found.jpg"
-    //           className="object-cover scale-150"
-    //           alt="image not found"
-    //         />
-    //       )}
-    //     </div>
-
-    //     <h3 className="mt-1 text-sm font-semibold text-center">{name}</h3>
-    //     <div className="flex items-center justify-center gap-2 mt-4 ">
-    //       <p className="text-xs text-gray-400">MRP</p>
-
-    //       {discountedPrice ? (
-    //         <>
-    //           <p className="text-sm text-muted-foreground line-through">
-    //             ₹{price}
-    //           </p>
-    //           <p className="text-lg sm:text-sm text-center text-pharma-emerald">
-    //             ₹{discountedPrice}
-    //           </p>
-    //         </>
-    //       ) : (
-    //         <p className="text-sm text-gray-600">₹{price}</p>
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   <button
-    //     className={`mt-2 w-full text-white py-1 text-xs rounded-full ${
-    //       isAvailable
-    //         ? "bg-pharma-emerald hover:bg-pharma-emerald-dark"
-    //         : "bg-gray-400 cursor-not-allowed"
-    //     }`}
-    //     disabled={!isAvailable}
-    //     onClick={handleAddToCart}
-    //   >
-    //     {isAvailable ? "Add to Cart" : "Out of Stock"}
-    //   </button>
-    // </div>
-
 
     <div
   key={id}
@@ -160,33 +96,43 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 
   {/* Product Image */}
-  <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-sm">
+  <div className="relative w-full h-40 overflow-hidden rounded-lg shadow-sm"
+    onClick={handleCardClick}
+>
     {image || imageUrl ? (
       <>
-        <img
-          src={image || imageUrl}
+        <Image
+          src={image || imageUrl || "/file_not_found.jpg"}
           alt={name}
           className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {hoverImageUrl && (
-          <img
+          <Image
             src={hoverImageUrl}
             alt={name}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 hover:opacity-100"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
       </>
     ) : (
-      <img
+      <Image
         src="/file_not_found.jpg"
         alt="Not Found"
         className="object-cover w-full h-full rounded-lg"
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     )}
   </div>
 
 
-  <div className="flex flex-col  justify-center mt-2">
+  <div className="flex flex-col  justify-center mt-2"
+    onClick={handleCardClick}
+>
 
 <div className="mt-4 text-center group relative">
 
@@ -221,11 +167,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
    {/* Availability Badge */}
    <div className="relative mt-2 flex items-center justify-center">
     {isAvailable ? (
-      <span className="bg-pharma-emerald text-white text-xs font-semibold px-2 py-1 rounded-full">
+      <span className="bg-pharma-emerald text-white text-xs font-semibold px-2 py-1 rounded-md">
         In Stock
       </span>
     ) : (
-      <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+      <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">
         Out of Stock
       </span>
     )}
@@ -234,8 +180,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
     {/* Discount Badge */}
     {discountPercentage && (
-    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm ">
-      {discountPercentage}% OFF
+    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-sm ">
+      {discountPercentage}%
     </span>
   )}
 
@@ -243,9 +189,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   {/* Add to Cart Button */}
   <button
-    className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-full shadow-md transition-transform duration-300 hover:scale-[1.02] ${
+    className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
       isAvailable
-        ? "bg-pharma-emerald hover:bg-pharma-emerald-dark"
+        ? "bg-pharma-emerald-light hover:bg-pharma-emerald"
         : "bg-gray-400 cursor-not-allowed"
     }`}
     disabled={!isAvailable}
@@ -253,6 +199,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
   >
     {isAvailable ? "Add to Cart" : "Out of Stock"}
   </button>
+
+{/* Add to Wishlist Button */}
+<button
+        className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
+          isInWishlist ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+        }`}
+        onClick={handleWishlistClick}
+        disabled={isInWishlist}
+      >
+        {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
+      </button>
 
 </div>
 

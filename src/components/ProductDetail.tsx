@@ -7,6 +7,7 @@ import Bestsellers from "@/components/BestSellers";
 import Featured from "@/components/Featured";
 import RatingAndReview from "@/components/RatingAndReview";
 import MedicalDetails from "./MedicalDetails";
+import FeaturesSection from "./FeaturesSection";
 
 interface ProductDetailProps {
   productId: string | string[] | undefined;
@@ -41,9 +42,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
   return (
     <>
     <ProductDetailUI product={product} loading={loading} error={error} />
+    <div className="border-b mt-12"></div>
     <Bestsellers />
+    <div className="border-b mt-12"></div>
     <Featured />
+    <div className="border-b mt-12"></div>
+    <FeaturesSection />
+    <div className="border-b mt-12"></div>
     <RatingAndReview productId={finalProductId}/>
+    <div className="border-b mt-12"></div>
     <MedicalDetails productId={finalProductId} />
     </>
   )

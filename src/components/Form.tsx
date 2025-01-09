@@ -1,6 +1,7 @@
-'use client'
+'use client';
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
+import AlertModal from "@/components/AlertModal";
 
 interface FormField {
   name: string;
@@ -28,6 +29,8 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
   const [formData, setFormData] = useState<any>({});
   const [clickCount, setClickCount] = useState(0);
   const [isTimeout, setIsTimeout] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -85,9 +88,22 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
       }, 5000);
     }
   };
-  
+
+  const handleWhatsAppClick = () => {
+    const whatsappURL = process.env.NEXT_PUBLIC_MOBILE_NUMBER;
+
+    if (whatsappURL) {
+      window.open(whatsappURL, "_blank");
+    } else {
+      setModalMessage("Unable to open WhatsApp chat. Please try again later.");
+      setShowModal(true);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-gray-300 rounded-lg shadow-lg">
+      <h1 className="font-bold text-2xl">Contact Form</h1>
+      <p className="mb-4 text-sm text-muted-foreground">Fill out the form below, and one of our representatives will get back to you shortly.</p>
       <form onSubmit={handleSubmit}>
         {successMessage && (
           <div className="text-green-600 text-center mb-4">
@@ -130,18 +146,9 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
         ))}
         <div className="flex justify-between z-50 relative">
           <button
-            className="bg-white fill-foreground p-2 rounded-full shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner"
+            className="bg-white fill-foreground p-2 rounded-md shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner"
             aria-label="Chat on WhatsApp"
-            onClick={() =>{ 
-              const whatsappURL = process.env.NEXT_PUBLIC_MOBILE_NUMBER; 
-              console.log("whatsappURL", whatsappURL);
-               
-              if (whatsappURL) {
-                window.open(whatsappURL, "_blank");
-              } else {
-                console.error("WhatsApp URL is not defined in environment variables.");
-              }
-            }}
+            onClick={handleWhatsAppClick}
           >
             <img
               alt="Chat on WhatsApp"
@@ -152,7 +159,7 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
 
           <button
             onClick={handleClick}
-            className={`bg-white fill-foreground p-2 rounded-full shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner -rotate-90 ${
+            className={`bg-white fill-foreground p-2 rounded-md shadow-lg cursor-pointer transform transition-transform duration-200 ease-in-out hover:scale-105 hover:shadow-2xl active:scale-95 active:shadow-inner -rotate-90 ${
               isTimeout ? "bg-gray-500 cursor-not-allowed" : ""
             }`}
             disabled={isTimeout}
@@ -178,6 +185,16 @@ const ReusableForm: React.FC<ReusableFormProps> = ({
           </button>
         </div>
       </form>
+
+      {showModal && (
+        <AlertModal
+          title="Error"
+          message={modalMessage}
+          onClose={() => setShowModal(false)}
+          isOpen={showModal}
+        />
+      )}
+      <p className="text-sm text-muted-foreground mt-2">We respect your privacy and will never share your information with third parties.</p>
     </div>
   );
 };
