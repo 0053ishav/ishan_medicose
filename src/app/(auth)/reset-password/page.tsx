@@ -1,13 +1,13 @@
 "use client";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { updatePassword } from "@/lib/appwrite"; // Import resetPassword action from appwrite.ts
+import { updatePassword } from "@/lib/appwrite";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-const ResetPasswordPage = () => {
+const ResetPasswordPageContent = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,11 +33,10 @@ const ResetPasswordPage = () => {
     setLoading(true);
 
     try {
-      // Call the resetPassword function from appwrite.ts
       await updatePassword(userId, secret, password);
 
       setMessage("Password has been reset successfully.");
-      setTimeout(() => router.push("/sign-in"), 3000); // Redirect to sign-in page after successful reset
+      setTimeout(() => router.push("/sign-in"), 3000);
     } catch (error) {
       console.error("Password reset error", error);
       setMessage("Error occurred. Please try again.");
@@ -110,5 +109,14 @@ const ResetPasswordPage = () => {
     </section>
   );
 };
+
+
+const ResetPasswordPage = () => {
+  return (
+    <Suspense fallback={(<Loader2 className="animate-spin"/>)}>
+      <ResetPasswordPageContent/>
+    </Suspense>
+  );
+}
 
 export default ResetPasswordPage;
