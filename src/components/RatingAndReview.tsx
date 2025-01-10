@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchReviews, submitReview } from "@/lib/appwrite";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lib/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { getLoggedInUser } from "@/actions/user.actions";
 import { ToastAction } from "@radix-ui/react-toast";

@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Loader2, MenuIcon } from "lucide-react";
 import Image from "next/image";
-import useLogo from "@/hooks/use-Logo";
+import useLogo from "@/lib/hooks/use-Logo";
 
 const routes = [
   {

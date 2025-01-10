@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/hooks/use-CartContext";
+import { useCart } from "@/lib/hooks/use-CartContext";
 import Image from "next/image";
 import { updateWishlist } from "@/lib/appwrite";
 

@@ -2,7 +2,7 @@
 import { Client, Account, Databases, Query, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { ProductCart } from "@/types";
-import { CartItemDB } from "@/hooks/use-CartContext";
+import { CartItemDB } from "@/lib/hooks/use-CartContext";
 import { getLoggedInUser } from "@/actions/user.actions";
 
 const applyDiscount = (price: number, discountPercentage: number) => {

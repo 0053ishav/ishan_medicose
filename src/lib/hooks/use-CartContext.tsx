@@ -230,7 +230,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       setCart([]);
       clearGuestCart();
     } else {
-      const userId = loggedInUser;
       setCart([]);
       if (user) {
         await updateUserCartInDb(user, []);
