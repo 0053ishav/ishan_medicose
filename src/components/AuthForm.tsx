@@ -13,7 +13,7 @@ import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signIn, signUp } from "@/actions/user.actions";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lib/hooks/use-toast";
 import { signUpWithGoogle } from "@/auth/oauth";
 
 const AuthForm = ({ type }: { type: string }) => {

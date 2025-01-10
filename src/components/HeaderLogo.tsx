@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
-import useLogo from "@/hooks/use-Logo";
+import useLogo from "@/lib/hooks/use-Logo";
 import { Loader2 } from "lucide-react";
 
 const HeaderLogo = () => {

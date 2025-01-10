@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import useFetchProducts from "@/hooks/useFetchProducts";
+import useFetchProducts from "@/lib/hooks/useFetchProducts";
 import { Carousel, CarouselItem, CarouselPrevious, CarouselNext, CarouselContent } from "@/components/ui/carousel"; // ShadCN Carousel components
 
 const Products = ({ tags }: { tags?: string }) => {

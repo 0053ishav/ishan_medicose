@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertCircleIcon } from "lucide-react";
-import { useCart } from "@/hooks/use-CartContext";
-import { useCartSheet } from "@/hooks/use-CartSheetProvider";
+import { useCart } from "@/lib/hooks/use-CartContext";
+import { useCartSheet } from "@/lib/hooks/use-CartSheetProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

@@ -6,8 +6,8 @@ import {
   SheetDescription,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { useCart } from '@/hooks/use-CartContext';
-import { useCartSheet } from '@/hooks/use-CartSheetProvider';
+import { useCart } from '@/lib/hooks/use-CartContext';
+import { useCartSheet } from '@/lib/hooks/use-CartSheetProvider';
 import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';

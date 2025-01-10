@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import CartSheet from '@/components/CartSheet';
-import { CartProvider } from '@/hooks/use-CartContext';
+import { CartProvider } from '@/lib/hooks/use-CartContext';
 
 interface CartSheetContextType {
   isCartOpen: boolean;
