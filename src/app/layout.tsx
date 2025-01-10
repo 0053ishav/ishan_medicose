@@ -17,7 +17,20 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Ishan Medicose",
   description: "Pharmacy Ishan Medicose",
+  icons:{ 
+    icon: [
+      '/favicon_ioPlus/favicon.ico?v=4',
+    ],
+    apple: [
+      '/favicon_ioPlus/apple-touch-icon.png?v=4',
+    ],
+    shortcut: [
+      '/favicon_ioPlus/apple-touch-icon.png'
+    ]
+},
+  manifest: '/favicon_ioPlus/site.webmanifest'
 };
+
 
 export default function RootLayout({
   children,
