@@ -30,7 +30,7 @@ const BannerCarousel = () => {
     if( !banners) {
       getBanners();
     }
-  }, []);
+  });
 
 
   useEffect(() => {
