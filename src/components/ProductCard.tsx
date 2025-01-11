@@ -48,15 +48,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const router = useRouter();
   const { addToCart } = useCart();
   const [isInWishlist, setIsInWishlist] = useState(false);
-  // const [user, setUser] = useState<any>(null);
 
   const handleCardClick = () => {
     if (context === "categories" && categoryId && categoryName) {
+      router.prefetch(`/categories/${categoryId}/${categoryName}/products/${id}`);
       router.push(`/categories/${categoryId}/${categoryName}/products/${id}`);
     } else {
+      router.prefetch(`/product/${id}?tag=${tags || "all"}`);
       router.push(`/product/${id}?tag=${tags || "all"}`);
     }
   };
+  
 
   const handleAddToCart = () => {
     addToCart({
