@@ -8,6 +8,7 @@ import Image from "next/image";
 import { updateWishlist } from "@/lib/appwrite";
 import { getLoggedInUser } from "@/actions/user.actions";
 import { Button } from "./ui/button";
+import { useCachedUser } from "@/lib/hooks/useCachedUser";
 
 interface ProductCardProps {
   id: string;
@@ -47,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const router = useRouter();
   const { addToCart } = useCart();
   const [isInWishlist, setIsInWishlist] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
 
   const handleCardClick = () => {
     if (context === "categories" && categoryId && categoryName) {
@@ -70,13 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const isAvailable = inStock && stock > 0;
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = getLoggedInUser();
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
+  const { user } = useCachedUser();
 
   const handleWishlistClick = async () => {
     try {
@@ -210,12 +205,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </Button>
 
       {/* Add to Wishlist Button */}
-      {!user && (
+      {user && (
         <Button
           className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
             isInWishlist
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
+              : "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark"
           }`}
           onClick={handleWishlistClick}
           disabled={isInWishlist}

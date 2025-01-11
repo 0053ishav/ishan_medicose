@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider } from "@/lib/hooks/use-CartContext";
 import { CartSheetProvider } from "@/lib/hooks/use-CartSheetProvider";
+import { WishlistProvider } from "@/components/WishlistContext";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -43,11 +44,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
 
+        <WishlistProvider>
         <CartProvider>
         <CartSheetProvider>
           {children}
         </CartSheetProvider>
         </CartProvider> 
+          </WishlistProvider>
       </body>
     </html>
   );

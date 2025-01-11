@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getLoggedInUser } from "@/actions/user.actions";
 import { updateWishlist } from "@/lib/appwrite";
+import { useCachedUser } from "@/lib/hooks/useCachedUser";
 
 interface ProductDetailUIProps {
   product: any | null;
@@ -30,14 +31,8 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
   const { openCart } = useCartSheet();
   const [isInWishlist, setIsInWishlist] = useState(false);
 
-  const [user, setUser] = useState<any>(null);
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = getLoggedInUser();
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
+  const { user } = useCachedUser();
+   
   const handleWishlistClick = async () => {
     try {
       setIsInWishlist(!isInWishlist);
@@ -213,12 +208,12 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
                 Contact Us
               </Button>
             )}
-            {!user && (
+            {user && (
               <Button
                 className={`px-6 py-2 text-white font-semibold transition-colors  ${
                   isInWishlist
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-500 hover:bg-blue-600"
+                    : "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark"
                 }`}
                 onClick={handleWishlistClick}
                 disabled={isInWishlist}

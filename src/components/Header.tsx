@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import HeaderLogo from "@/components/HeaderLogo";
 import Navigation from "@/components/Navigation";
 import SearchBar from "@/components/SearchBar";
@@ -7,36 +7,18 @@ import { useCartSheet } from "@/lib/hooks/use-CartSheetProvider";
 import { useCart } from "@/lib/hooks/use-CartContext";
 import { Button } from "@/components/ui/button";
 import HeaderBox from "./HeaderBox";
-import { getLoggedInUser } from "@/actions/user.actions";
+import { useCachedUser } from "@/lib/hooks/useCachedUser";
+import { useWishlist } from "@/components/WishlistContext";
 
 const Header = () => {
   const { openCart } = useCartSheet();
   const { cart } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const loggedIn = await getLoggedInUser();
-      setLoggedInUser(loggedIn);
-    }
-
-    fetchUser();
-
-     const handleScroll = () => {
-       if (window.scrollY > 50) {
-         setIsScrolled(true);
-       } else {
-         setIsScrolled(false);
-       }
-     };
- 
-     window.addEventListener("scroll", handleScroll);
- 
-     return () => {
-       window.removeEventListener("scroll", handleScroll);
-     };
-   }, []);
+  interface User {
+    firstName?: string;
+  }
+  const { user } = useCachedUser() as { user: User | null };
 
   return (
     <header className="bg-gradient-to-b from-pharma-emerald to-pharma-emerald-light px-4 py-2 md:py-8 lg:px-14 md:pb-20">
@@ -50,10 +32,9 @@ const Header = () => {
             <HeaderBox 
             type="header"
             title="Welcome"
-            user={loggedInUser?.firstName || 'Guest'}
+            user={ user?.firstName || 'Guest'}
             subtext=""
             />
-         
           {!isScrolled && (
             <Button
               onClick={openCart}
