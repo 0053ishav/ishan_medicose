@@ -109,27 +109,70 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
   }
 }
 
-export const  getLoggedInUser = async () => {
-  try {
-    const sessionClient = await createSessionClient();
+// export const  getLoggedInUser = async () => {
+//   try {
+//     const sessionClient = await createSessionClient();
 
-    if (!sessionClient) {
-      console.warn("User is not logged in");
+//     if (!sessionClient) {
+//       console.warn("User is not logged in");
+//       return null;
+//     }
+//     const { account } = sessionClient;
+//     const result = await account.get();
+
+//     if (!result) return null;
+
+//     const user = await getUserInfo({ userId: result.$id})
+
+//     return parseStringify(user);
+//   } catch (error) {
+//     console.error(error)
+//     return null;
+//   }
+// }
+
+export const getLoggedInUser = async () => {
+  try {
+    const sessionCookie = (await cookies()).get("appwrite-session");
+
+    if (!sessionCookie) {
+      console.warn("No session cookie found. User is not logged in.");
       return null;
     }
+
+    // Check localStorage only on the client
+    if (typeof window !== "undefined") {
+      const cachedUser = localStorage.getItem("user");
+      if (cachedUser) {
+        return JSON.parse(cachedUser);
+      }
+    }
+
+    // Fetch from the server as a fallback
+    const sessionClient = await createSessionClient();
+    if (!sessionClient) {
+      console.warn("User session not found on server.");
+      return null;
+    }
+
     const { account } = sessionClient;
     const result = await account.get();
-
     if (!result) return null;
 
-    const user = await getUserInfo({ userId: result.$id})
+    const user = await getUserInfo({ userId: result.$id });
+
+    if (user && typeof window !== "undefined") {
+      // Cache user data in localStorage on the client
+      localStorage.setItem("user", JSON.stringify(user));
+    }
 
     return parseStringify(user);
   } catch (error) {
-    console.error(error)
+    console.error("Error fetching logged-in user:", error);
     return null;
   }
-}
+};
+
 
 export const logoutAccount = async () => {
   try {
