@@ -9,6 +9,7 @@ import {
 import { useCart } from '@/lib/hooks/use-CartContext';
 import { useCartSheet } from '@/lib/hooks/use-CartSheetProvider';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -75,10 +76,12 @@ const CartSheet = () => {
                   onClick={() =>  router.push(`/product/${item.id}`)}
                 >
                   <div className="flex items-center">
-                    <img
+                    <Image
                       src={item.imageUrl || '/file_not_found.jpg'}
-                      alt={item.name}
+                      alt={item.name || "Image not available"}
                       className="w-16 h-16 object-cover rounded"
+                      width={64}
+                      height={64}
                     />
                     <div className="ml-4">
                       <p className="text-gray-700 font-medium">{item.name}</p>

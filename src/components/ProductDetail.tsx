@@ -37,8 +37,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
 
   useEffect(() => {
     if (!productId) return;
-
+  
     const fetchProductDetails = async () => {
+      setLoading(true);
       try {
         const productData = await fetchProductById(productId as string);
         setProduct(productData);
@@ -50,9 +51,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {
         setLoading(false);
       }
     };
-
+  
     fetchProductDetails();
   }, [productId]);
+  
 
   const id = Array.isArray(productId) ? productId[0] : productId;
   const finalProductId = typeof id === "string" ? id : "";

@@ -174,6 +174,7 @@ const Footer = () => {
           </a>
         </div>
       </div>
+      <div className="md:hidden h-12"></div>
     </footer>
   );
 };

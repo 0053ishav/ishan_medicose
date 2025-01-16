@@ -68,8 +68,8 @@ const BottomNavigation = () => {
 
   return (
     <>
-      <nav className="fixed bottom-0 left-0 w-full bg-white shadow-lg border-t border-gray-200 md:hidden z-30">
-        <ul className="flex justify-around items-center h-16">
+      <nav className="fixed bottom-0 left-0 w-full bg-white shadow-lg border-t border-gray-200 z-30 overflow-x-hidden md:hidden">
+        <ul className="flex justify-between items-center h-16 w-full px-4 sm:px-8">
           {tabs.map((tab) => (
             <li key={tab.name} className="relative flex flex-col items-center space-y-1">
               <a
@@ -96,6 +96,7 @@ const BottomNavigation = () => {
           ))}
         </ul>
       </nav>
+
       {isSearchOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-center items-center">
           <div
