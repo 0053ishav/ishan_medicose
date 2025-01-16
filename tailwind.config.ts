@@ -9,6 +9,17 @@ export default {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: [
+				  "ui-sans-serif",
+				  "system-ui",
+				  "sans-serif",
+				  "Apple Color Emoji",
+				  "Segoe UI Emoji",
+				  "Segoe UI Symbol",
+				  "Noto Color Emoji",
+				],
+			  },
 			colors: {
 				fill: {
 					1: "rgba(255, 255, 255, 0.10)",
