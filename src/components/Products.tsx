@@ -3,7 +3,13 @@
 import React, { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import useFetchProducts from "@/lib/hooks/useFetchProducts";
-import { Carousel, CarouselItem, CarouselPrevious, CarouselNext, CarouselContent } from "@/components/ui/carousel"; // ShadCN Carousel components
+import {
+  Carousel,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselContent,
+} from "@/components/ui/carousel";
 
 const Products = ({ tags }: { tags?: string }) => {
   const { loading, products } = useFetchProducts(tags);
@@ -31,7 +37,7 @@ const Products = ({ tags }: { tags?: string }) => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto px-4 py-6 overflow-hidden">
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
           {Array.from({ length: 5 }).map((_, index) => (
@@ -50,11 +56,14 @@ const Products = ({ tags }: { tags?: string }) => {
           ))}
         </div>
       ) : (
-        <div>
-          <Carousel className="w-full">
+        <div className="relative">
+          <Carousel className="w-full" aria-label="Product Carousel">
             <CarouselContent>
               {paginatedProducts.map((product) => (
-                <CarouselItem key={product.id} className="lg:basis-1/5 sm:basis-1/3">
+                <CarouselItem
+                  key={product.id}
+                  className="lg:basis-1/5 sm:basis-1/3 basis-1/2"
+                >
                   <ProductCard
                     id={product.id}
                     name={product.name}
@@ -71,15 +80,23 @@ const Products = ({ tags }: { tags?: string }) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious
+              aria-label="Previous Products"
+              className="absolute top-1/2 -translate-y-1/2 -left-4 bg-white shadow-lg p-2 rounded-full z-10 sm:left-4"
+            />
+            <CarouselNext
+              aria-label="Next Products"
+              className="absolute top-1/2 -translate-y-1/2 -right-4 bg-white shadow-lg p-2 rounded-full z-10 sm:right-4"
+            />
           </Carousel>
 
+          {/* Pagination */}
           {!tags && (
             <div className="flex justify-center items-center mt-6 space-x-4">
               <button
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
+                aria-label="Previous Page"
                 className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
                   currentPage === 1
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
@@ -93,6 +110,7 @@ const Products = ({ tags }: { tags?: string }) => {
                   <button
                     key={index + 1}
                     onClick={() => setCurrentPage(index + 1)}
+                    aria-label={`Go to page ${index + 1}`}
                     className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-all ${
                       currentPage === index + 1
                         ? "bg-pharma-emerald-light text-white"
@@ -106,6 +124,7 @@ const Products = ({ tags }: { tags?: string }) => {
               <button
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
+                aria-label="Next Page"
                 className={`w-10 h-10 flex items-center justify-center rounded-md transition-all ${
                   currentPage === totalPages
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"

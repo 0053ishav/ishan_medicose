@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, Heart } from "lucide-react";
 import { useCart } from "@/lib/hooks/use-CartContext";
 import { useCartSheet } from "@/lib/hooks/use-CartSheetProvider";
 import { Button } from "@/components/ui/button";
@@ -32,7 +32,7 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
   const [isInWishlist, setIsInWishlist] = useState(false);
 
   const { user } = useCachedUser();
-   
+
   const handleWishlistClick = async () => {
     try {
       setIsInWishlist(!isInWishlist);
@@ -126,6 +126,18 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
                   className="object-cover"
                   priority
                 />
+                {user && (
+                  <button
+                    className="relative top-0 right-0 z-50 text-gray-500 hover:text-red-500 transition-colors duration-200 focus:outline-none"
+                    onClick={handleWishlistClick}
+                  >
+                    {isInWishlist ? (
+                      <Heart fill="red" className="w-6 h-6" />
+                    ) : (
+                      <Heart className="w-6 h-6" />
+                    )}
+                  </button>
+                )}
               </div>
 
               <div className="flex gap-2 mt-4">
@@ -206,19 +218,6 @@ const ProductDetailUI: React.FC<ProductDetailUIProps> = ({
                 className="relative flex items-center  justify-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold transition-colors rounded-md"
               >
                 Contact Us
-              </Button>
-            )}
-            {user && (
-              <Button
-                className={`px-6 py-2 text-white font-semibold transition-colors  ${
-                  isInWishlist
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark"
-                }`}
-                onClick={handleWishlistClick}
-                disabled={isInWishlist}
-              >
-                {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
               </Button>
             )}
             <Button

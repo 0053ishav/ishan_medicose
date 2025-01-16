@@ -68,7 +68,7 @@ const Header = () => {
           {isScrolled && (
             <button
               onClick={openCart}
-              className="fixed bottom-4 right-4 flex items-center justify-center w-14 h-14 bg-pharma-emerald rounded-full shadow-lg z-50 p-2 cursor-pointer transform transition-transform duration-200 ease-in-out hover:bg-pharma-emerald-dark active:scale-95"
+              className="fixed bottom-16 sm:bottom-4 right-8 sm:right-4 flex items-center justify-center w-14 h-14 bg-pharma-emerald rounded-full shadow-lg z-50 p-2 cursor-pointer transform transition-transform duration-200 ease-in-out hover:bg-pharma-emerald-dark active:scale-95"
               >
               <img src="/shopping-cart.png"  className="w-7 -ml-1 h-6 text-gray-700" alt="shopping cart" />
               {cart.length > 0 && (

@@ -9,6 +9,7 @@ import { updateWishlist } from "@/lib/appwrite";
 import { getLoggedInUser } from "@/actions/user.actions";
 import { Button } from "./ui/button";
 import { useCachedUser } from "@/lib/hooks/useCachedUser";
+import { CheckCircle, Heart, XCircle } from "lucide-react";
 
 interface ProductCardProps {
   id: string;
@@ -51,14 +52,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleCardClick = () => {
     if (context === "categories" && categoryId && categoryName) {
-      router.prefetch(`/categories/${categoryId}/${categoryName}/products/${id}`);
+      router.prefetch(
+        `/categories/${categoryId}/${categoryName}/products/${id}`
+      );
       router.push(`/categories/${categoryId}/${categoryName}/products/${id}`);
     } else {
       router.prefetch(`/product/${id}?tag=${tags || "all"}`);
       router.push(`/product/${id}?tag=${tags || "all"}`);
     }
   };
-  
 
   const handleAddToCart = () => {
     addToCart({
@@ -97,130 +99,109 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      key={id}
-      className="relative bg-white rounded-lg shadow-lg p-4 transition-transform duration-300 hover:shadow-2xl hover:scale-[1.03] cursor-pointer"
-    >
-      {/* Product Image */}
-      <div
-        className="relative w-full h-40 overflow-hidden rounded-lg shadow-sm"
-        onClick={handleCardClick}
+    className="relative bg-white rounded-lg shadow-lg p-4 
+    hover:shadow-xl hover:scale-[1.02] transition-transform duration-300 
+    sm:p-3 sm:rounded-md sm:shadow-md"
+  >
+    {/* Wishlist Button */}
+    {user && (
+      <button
+        className="absolute top-2 right-2 z-50 text-gray-500 hover:text-red-500 
+        transition-colors duration-200 focus:outline-none sm:w-5 sm:h-5"
+        onClick={handleWishlistClick}
       >
-        {image || imageUrl ? (
-          <>
-            <Image
-              src={image || imageUrl || "/file_not_found.jpg"}
-              alt={name}
-              className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            {hoverImageUrl && (
-              <Image
-                src={hoverImageUrl}
-                alt={name}
-                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 hover:opacity-100"
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            )}
-          </>
+        {isInWishlist ? (
+          <Heart fill="red" className="w-6 h-6 sm:w-5 sm:h-5" />
         ) : (
-          <Image
-            src="/file_not_found.jpg"
-            alt="Not Found"
-            className="object-cover w-full h-full rounded-lg"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          <Heart className="w-6 h-6 sm:w-5 sm:h-5" />
         )}
-      </div>
+      </button>
+    )}
 
-      <div
-        className="flex flex-col  justify-center mt-2"
-        onClick={handleCardClick}
+    {/* Product Image */}
+    <div
+      className="relative w-full h-40 sm:h-28 overflow-hidden rounded-lg 
+      shadow-sm hover:scale-110 transition-transform duration-300 cursor-pointer"
+      onClick={() => router.push(`/product/${id}`)}
+    >
+      {image || imageUrl ? (
+        <Image
+          src={image || imageUrl || "/file_not_found.jpg"}
+          alt={name}
+          className="object-cover w-full h-full"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      ) : (
+        <Image
+          src="/file_not_found.jpg"
+          alt="Not Found"
+          className="object-cover w-full h-full rounded-lg"
+          fill
+        />
+      )}
+    </div>
+
+    {/* Product Info */}
+    <div className="mt-2">
+      <h3
+        className="text-base font-bold text-gray-800 truncate sm:text-sm"
+        title={name}
       >
-        <div className="mt-4 text-center group relative">
-          {/* Product Name */}
-          <h3
-            className="text-base font-bold text-gray-800 truncate max-w-full overflow-hidden whitespace-nowrap"
-            style={{
-              maskImage:
-                "linear-gradient(to right, black 80%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(to right, black 80%, transparent 100%)",
-            }}
-          >
-            {name}
-          </h3>
-          {name.length > 20 && ( // Show tooltip only for long names
-            <div className="absolute top-full z-50 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-xs py-1 px-2 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              {name}
-            </div>
-          )}
-        </div>
-
-        {/* Pricing Section */}
-        <div className="flex items-center justify-center mt-2 gap-2">
+        {name}
+      </h3>
+      <div className="flex items-center justify-between mt-1">
+        <div className="flex items-center gap-2">
           {discountedPrice ? (
             <>
               <p className="text-sm text-gray-400 line-through">₹{price}</p>
-              <p className="text-lg font-bold text-pharma-emerald">
+              <p className="text-lg font-bold text-pharma-emerald sm:text-base">
                 ₹{discountedPrice}
               </p>
             </>
           ) : (
-            <p className="text-lg font-bold text-gray-800">₹{price}</p>
+            <p className="text-lg font-bold text-gray-800 sm:text-base">
+              ₹{price}
+            </p>
           )}
         </div>
-        {/* Availability Badge */}
-        <div className="relative mt-2 flex items-center justify-center">
-          {isAvailable ? (
-            <span className="bg-pharma-emerald text-white text-xs font-semibold px-2 py-1 rounded-md">
-              In Stock
-            </span>
-          ) : (
-            <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md">
-              Out of Stock
-            </span>
-          )}
-        </div>
+        {discountPercentage && (
+          <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-sm">
+            {discountPercentage}%
+          </span>
+        )}
       </div>
+    </div>
 
-      {/* Discount Badge */}
-      {discountPercentage && (
-        <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-sm ">
-          {discountPercentage}%
-        </span>
-      )}
-
-      {/* Add to Cart Button */}
-      <Button
-        className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
-          isAvailable
-            ? "bg-pharma-emerald-light hover:bg-pharma-emerald"
-            : "bg-gray-400 cursor-not-allowed"
-        }`}
-        disabled={!isAvailable}
-        onClick={handleAddToCart}
-      >
-        {isAvailable ? "Add to Cart" : "Out of Stock"}
-      </Button>
-
-      {/* Add to Wishlist Button */}
-      {user && (
-        <Button
-          className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md transition-transform duration-300 hover:scale-[1.02] ${
-            isInWishlist
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-pharma-emerald cursor-pointer hover:bg-pharma-emerald-dark"
-          }`}
-          onClick={handleWishlistClick}
-          disabled={isInWishlist}
-        >
-          {isInWishlist ? "Added to Wishlist" : "Add to Wishlist"}
-        </Button>
+    {/* Stock Badge */}
+    <div className="mt-2">
+      {inStock && stock > 0 ? (
+        <div className="flex items-center gap-1 text-sm text-green-600">
+          <CheckCircle className="w-4 h-4" />
+          <span>In Stock</span>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1 text-sm text-red-600">
+          <XCircle className="w-4 h-4" />
+          <span>Out of Stock</span>
+        </div>
       )}
     </div>
+
+    {/* Add to Cart Button */}
+    <Button
+      className={`mt-4 w-full py-2 text-sm font-medium text-white rounded-md shadow-md 
+      transition-transform duration-300 hover:scale-[1.02] ${
+        inStock
+          ? "bg-pharma-emerald-light hover:bg-pharma-emerald"
+          : "bg-gray-400 cursor-not-allowed"
+      }`}
+      disabled={!inStock || stock <= 0}
+      onClick={handleAddToCart}
+    >
+      {inStock ? "Add to Cart" : "Out of Stock"}
+    </Button>
+  </div>
   );
 };
 
